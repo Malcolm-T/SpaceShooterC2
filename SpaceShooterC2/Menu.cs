@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
+//using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,7 +40,12 @@ namespace SpaceShooterC2
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            for(int i = 0; i < menu.Count)
+            {
+                if(i == selected) 
+                    spriteBatch.Draw(menu[i].Texture, new Vector2(menu[i].Position.X, menu[i].Position.Y), Color.RosyBrown);
+                else
+            }
         }
 
         class MenuItem
