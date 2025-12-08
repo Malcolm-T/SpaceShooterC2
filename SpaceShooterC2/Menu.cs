@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,18 +36,46 @@ namespace SpaceShooterC2
 
         public int Update(GameTime gameTime)
         {
-            
-        }
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (lastChange + 130 < gameTime.TotalGameTime.TotalMilliseconds)
+            {
+                if (keyboardState.IsKeyDown(Keys.Up))
+                {
+                    selected++;
+                    if (selected > menu.Count - 1)
+                        selected = 0;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Down))
+                {
+                    selected--;
+                    if (selected < 0)
+                        selected = menu.Count - 1;
+                }
+
+                lastChange = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+            if (keyboardState.IsKeyDown(Keys.Enter))
+            {
+                return menu[selected].CurrentState;
+            }
+            else
+                return defaultMenuState;
+
+        }            
 
         //Test
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for(int i = 0; i < menu.Count)
+            for (int i = 0; i<menu.Count; i++)
             {
-                if(i == selected) 
+                if (i == selected)
                     spriteBatch.Draw(menu[i].Texture, new Vector2(menu[i].Position.X, menu[i].Position.Y), Color.RosyBrown);
                 else
+                    spriteBatch.Draw(menu[i].Texture, menu[i].Position, Color.White);
+
             }
         }
 

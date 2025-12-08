@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static SpaceShooterC2.GameElements;
 
 namespace SpaceShooterC2
 {
@@ -57,7 +58,7 @@ namespace SpaceShooterC2
                     this.Exit();
                     break;
                 default:
-                    GameElements.currentState = GameElements.MenuUpdate();
+                    GameElements.currentState = State.Menu;
                     break;
             }
         }

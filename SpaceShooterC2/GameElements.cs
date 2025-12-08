@@ -18,8 +18,6 @@ namespace SpaceShooterC2
 
     static class GameElements
     {
-        static Texture2D menuSprite;
-        static Vector2 menuPos;
         static Player player; 
         static List<Enemy> enemies;
         static List<Coin> coins; 
@@ -35,6 +33,7 @@ namespace SpaceShooterC2
         //Olika gamestates
         public enum State { Menu, Run, Highscore, Quit};
         public static State currentState;
+        static Menu menu;
 
         public static void Initialize()
         {
@@ -43,9 +42,11 @@ namespace SpaceShooterC2
 
         public static void LoadContent(ContentManager content, GameWindow window)
         {
-            menuSprite = content.Load<Texture2D>("images/menu");
-            menuPos.X = window.ClientBounds.Width / 2 - menuSprite.Width / 2;
-            menuPos.Y = window.ClientBounds.Height / 2 - menuSprite.Height / 2;
+            menu = new Menu((int)State.Menu);
+            menu.AddItem(content.Load<Texture2D>("images/menu/start"), (int)State.Run);
+            menu.AddItem(content.Load<Texture2D>("images/menu/highscore"), (int)State.Highscore);
+            menu.AddItem(content.Load<Texture2D>("images/menu/exit"), (int)State.Quit);
+
             player = new Player(content.Load<Texture2D>("images/player/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("images/player/bullet"));
 
 
@@ -76,22 +77,14 @@ namespace SpaceShooterC2
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
         }
 
-        public static State MenuUpdate()
+        public static State MenuUpdate(GameTime gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.S))
-                return State.Run;
-            if (keyboardState.IsKeyDown(Keys.H))
-                return State.Highscore;
-            if (keyboardState.IsKeyDown(Keys.A))
-                return State.Quit;
-
-            return State.Menu;
+            return (State)menu.Update(gameTime);
         }
 
         public static void MenuDraw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(menuSprite, menuPos, Color.White);
+            menu.Draw(spriteBatch);
         }
 
         public static State RunUpdate(ContentManager content, GameWindow window, GameTime gameTime)
