@@ -35,8 +35,10 @@ namespace SpaceShooterC2
 
         public int Update(GameTime gameTime)
         {
-
+            
         }
+
+        //Test
 
         public void Draw(SpriteBatch spriteBatch)
         {
