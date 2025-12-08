@@ -31,6 +31,13 @@ namespace SpaceShooterC2
 
         public void AddItem(Texture2D itemTexture, int state)
         {
+            float X = 0; 
+            float Y = 0 + currentHeight;
+
+            currentHeight += itemTexture.Height + 20;
+
+            MenuItem temp = new MenuItem(itemTexture, new Vector2(X, Y), state);
+            menu.Add(temp);
 
         }
 
