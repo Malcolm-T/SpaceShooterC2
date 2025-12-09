@@ -47,14 +47,14 @@ namespace SpaceShooterC2
 
             if (lastChange + 130 < gameTime.TotalGameTime.TotalMilliseconds)
             {
-                if (keyboardState.IsKeyDown(Keys.Up))
+                if (keyboardState.IsKeyDown(Keys.Down))
                 {
                     selected++;
                     if (selected > menu.Count - 1)
                         selected = 0;
                 }
 
-                if (keyboardState.IsKeyDown(Keys.Down))
+                if (keyboardState.IsKeyDown(Keys.Up))
                 {
                     selected--;
                     if (selected < 0)
@@ -65,10 +65,10 @@ namespace SpaceShooterC2
             }
             if (keyboardState.IsKeyDown(Keys.Enter))
             {
-                return menu[selected].CurrentState;
+                return menu[selected].State;
             }
-            else
-                return defaultMenuState;
+            
+            return defaultMenuState;
 
         }            
 
@@ -92,16 +92,16 @@ namespace SpaceShooterC2
             Vector2 position;
             int currentState;
 
-            public MenuItem(Texture2D texture, Vector2 position, int currenState)
+            public MenuItem(Texture2D texture, Vector2 position, int currentState)
             {
                 this.texture = texture;
                 this.position = position;
-                this.currentState = currenState;
+                this.currentState = currentState;
             }
 
             public Texture2D Texture { get { return texture; } }
             public Vector2 Position { get { return position; } }
-            public int CurrentState { get { return currentState; } }
+            public int State { get { return currentState; } }
         }
     }
 }

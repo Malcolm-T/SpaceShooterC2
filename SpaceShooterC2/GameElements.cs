@@ -107,7 +107,13 @@ namespace SpaceShooterC2
                 if (enemy.IsAlive)
                 {
                     if (gameTime.TotalGameTime.TotalMilliseconds < coolDown)
+                    {
                         skadlig = false;
+                        player.IsInvincible = true;
+                        player.InvincibleUntil = gameTime.TotalGameTime.TotalMilliseconds + 1000;
+
+                    }
+
                     else skadlig = true;
 
                     if (skadlig)
@@ -116,6 +122,7 @@ namespace SpaceShooterC2
                         {
                             liv--;
                             coolDown = gameTime.TotalGameTime.TotalMilliseconds + 3000;
+                            
 
                             if (liv == 0)
                             {

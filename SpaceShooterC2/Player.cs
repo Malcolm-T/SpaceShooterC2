@@ -14,7 +14,13 @@ namespace SpaceShooterC2
     {
         public List<Bullet> Bullets { get { return bullets; } }
 
+        public bool IsInvincible { get; set; }
+        public double InvincibleUntil { get; set; }
+        public double Time { get; set; }
+
         int points = 0;
+
+
         public Player(Texture2D texture, float X, float Y, float speedX, float speedY, Texture2D bulletTexture) : base(texture, X, Y, speedX, speedY)
         {
             bullets = new List<Bullet>();
@@ -106,13 +112,29 @@ namespace SpaceShooterC2
 
 
             if (keyboardState.IsKeyDown(Keys.Escape))
-                isAlive = false; 
+                isAlive = false;
+
+            double Time = gameTime.TotalGameTime.TotalMilliseconds;
+            if(IsInvincible && Time > InvincibleUntil)
+                IsInvincible = false;
         }
 
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, vector, Color.White);
+            bool blink = false;
+
+            //När spelaren är osårbar
+            if (IsInvincible)
+            {
+                if((int)(Time / 150) % 2 == 0)
+                    blink = true;
+
+            }
+
+            //Rita spelaren
+            if (!blink)
+                spriteBatch.Draw(texture, vector, Color.White);
             foreach (Bullet b in bullets)
                 b.Draw(spriteBatch);
         }
@@ -132,6 +154,14 @@ namespace SpaceShooterC2
 
             //Gör så att spelaren lever igen
             isAlive = true; 
+        }
+
+        public void Skadad(GameTime gameTime)
+        {
+            if (gameTime.TotalGameTime.TotalMilliseconds%2 == 0)
+            {
+                
+            }
         }
     }
 }

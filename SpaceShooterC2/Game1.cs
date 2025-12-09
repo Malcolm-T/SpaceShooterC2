@@ -47,18 +47,20 @@ namespace SpaceShooterC2
 
             switch (GameElements.currentState)
             {
+                case GameElements.State.Menu:
+                    GameElements.currentState = GameElements.MenuUpdate(gameTime);
+                    break;
+
                 case GameElements.State.Run:
-                    GameElements.RunUpdate(Content, Window, gameTime);
+                    GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
                     break;
 
                 case GameElements.State.Highscore:
                     GameElements.currentState = GameElements.HighScoreUpdate();
                     break;
+
                 case GameElements.State.Quit:
-                    this.Exit();
-                    break;
-                default:
-                    GameElements.currentState = State.Menu;
+                    Exit();
                     break;
             }
         }
