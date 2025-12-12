@@ -114,7 +114,7 @@ namespace SpaceShooterC2
             if (keyboardState.IsKeyDown(Keys.Escape))
                 isAlive = false;
 
-            double Time = gameTime.TotalGameTime.TotalMilliseconds;
+            Time = gameTime.TotalGameTime.TotalMilliseconds;
             if(IsInvincible && Time > InvincibleUntil)
                 IsInvincible = false;
         }
