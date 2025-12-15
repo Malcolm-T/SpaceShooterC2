@@ -26,6 +26,9 @@ namespace SpaceShooterC2
         static Texture2D coinSprite;
         static PrintText printText;
 
+        //Mus position
+
+
         //Liv
         static int liv = 3;
         static double coolDown;
