@@ -155,13 +155,5 @@ namespace SpaceShooterC2
             //Gör så att spelaren lever igen
             isAlive = true; 
         }
-
-        public void Skadad(GameTime gameTime)
-        {
-            if (gameTime.TotalGameTime.TotalMilliseconds%2 == 0)
-            {
-                
-            }
-        }
     }
 }

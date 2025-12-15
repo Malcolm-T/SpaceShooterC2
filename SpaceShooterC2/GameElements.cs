@@ -19,6 +19,8 @@ namespace SpaceShooterC2
     static class GameElements
     {
         static Player player; 
+        public static Player Player { get { return player; } } //Gör synlig överallt
+
         static List<Enemy> enemies;
         static List<Coin> coins; 
         static Texture2D coinSprite;
