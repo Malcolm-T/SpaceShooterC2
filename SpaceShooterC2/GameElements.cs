@@ -61,7 +61,7 @@ namespace SpaceShooterC2
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height / 2);
-                Mine temp = new Mine(tmpSprite, rndX, rndY);
+                Mine temp = new Mine(tmpSprite, rndX, rndY, player);
                 enemies.Add(temp); //Lägg till i listan
             }
 
@@ -216,7 +216,7 @@ namespace SpaceShooterC2
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height/2);
-                Mine temp = new Mine(tmpSprite, rndX, rndY);
+                Mine temp = new Mine(tmpSprite, rndX, rndY, player);
                 enemies.Add(temp); //Lägg till i listan
             }
 

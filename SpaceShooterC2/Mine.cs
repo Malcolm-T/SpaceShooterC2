@@ -11,25 +11,38 @@ namespace SpaceShooterC2
 {
     class Mine : Enemy
     {
-        
-        public Mine(Texture2D texture, float X, float Y) : base(texture, X, Y, 6f, 0.3f)
+        private Player player;
+
+        public Mine(Texture2D texture, float X, float Y, Player player) : base(texture, X, Y, 6f, 0.3f)
         {
-    
+            this.player = player;
         }
 
         public override void Update(GameWindow window)
         {
-            vector.X += speed.X;
-                if (vector.X > window.ClientBounds.Width - texture.Width || vector.X< 0)
-                {
-                    speed.X *= -1;
-                }
+            if (player.PlayerPosX > vector.X)
+                vector.X ++;
+            else if (player.PlayerPosX < vector.X)
+                vector.X --;
 
-            vector.Y += speed.Y;
-                if (vector.Y > window.ClientBounds.Height)
-                {
-                    isAlive = false;
-                }
+            if (player.PlayerPosY > vector.Y)
+                vector.Y ++;
+            else if (player.PlayerPosY < vector.Y)
+                vector.Y --;
+
+
+
+            //vector.X += speed.X;
+            //    if (vector.X > window.ClientBounds.Width - texture.Width || vector.X< 0)
+            //    {
+            //        speed.X *= -1;
+            //    }
+
+            //vector.Y += speed.Y;
+            //    if (vector.Y > window.ClientBounds.Height)
+            //    {
+            //        isAlive = false;
+            //    }
         }
     }
 }

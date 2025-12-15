@@ -20,6 +20,10 @@ namespace SpaceShooterC2
 
         int points = 0;
 
+        public float PlayerPosX { get { return vector.X; } }
+        public float PlayerPosY { get { return vector.Y; } }
+
+
 
         public Player(Texture2D texture, float X, float Y, float speedX, float speedY, Texture2D bulletTexture) : base(texture, X, Y, speedX, speedY)
         {

@@ -17,7 +17,7 @@ namespace SpaceShooterC2
            
         }
 
-        public abstract void Update(GameWindow window, GameTime gameTime);
+        public abstract void Update(GameWindow window);
 
     }
 }
