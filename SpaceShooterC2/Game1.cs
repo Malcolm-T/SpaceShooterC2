@@ -22,6 +22,8 @@ namespace SpaceShooterC2
 
         protected override void Initialize()
         {
+            IsMouseVisible = true;
+
             GameElements.currentState = GameElements.State.Menu;
             GameElements.Initialize();
             base.Initialize();

@@ -9,16 +9,23 @@ namespace SpaceShooterC2
 {
     class Bullet : PhysicalObject
     {
-        public Bullet(Texture2D texture, float X, float Y) : base(texture, X, Y, 0, 3f)
+        public Bullet(Texture2D texture, float X, float Y, float speedX, float speedY) : base(texture, X, Y, speedX, speedY) 
         {
 
         }
 
         public void Update()
         {
-            vector.Y -= speed.Y;
-            if (vector.Y < 0)
+            vector.X += speed.X;
+            vector.Y += speed.Y;
+
+            if(vector.Y<-50 || vector.Y>2000|| vector.X < -50 || vector.X > 2000)
                 isAlive = false;
+
+
+            //vector.Y -= speed.Y;
+            //if (vector.Y < 0)
+            //    isAlive = false;
         }
     }
 }

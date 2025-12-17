@@ -42,7 +42,7 @@ namespace SpaceShooterC2
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Right))
+            if (keyboardState.IsKeyDown(Keys.D))
             {
                 if (keyboardState.IsKeyDown(Keys.LeftShift))
                     vector.X += speed.X * 2;
@@ -50,7 +50,7 @@ namespace SpaceShooterC2
                     vector.X += speed.X;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Left))
+            if (keyboardState.IsKeyDown(Keys.A))
             {
                 if (keyboardState.IsKeyDown(Keys.LeftShift))
                     vector.X -= speed.X * 2;
@@ -59,7 +59,7 @@ namespace SpaceShooterC2
             }
 
 
-            if (keyboardState.IsKeyDown(Keys.Down))
+            if (keyboardState.IsKeyDown(Keys.S))
             {
                 if (keyboardState.IsKeyDown(Keys.LeftShift))
                     vector.Y += speed.Y*2;
@@ -68,7 +68,7 @@ namespace SpaceShooterC2
             }
 
 
-            if (keyboardState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.W))
             {
                 if (keyboardState.IsKeyDown(Keys.LeftShift))
                     vector.Y -= speed.Y * 2;
@@ -89,18 +89,36 @@ namespace SpaceShooterC2
                 vector.Y = gameWindow.ClientBounds.Height - texture.Height;
 
 
-
-            if (keyboardState.IsKeyDown(Keys.Space))
+            MouseState mouseState = Mouse.GetState();
+            if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 //Kontrollera ifall spelaren får skjuta
                 if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 200)
                 {
-                    //Skapa skottet
-                    Bullet temp = new Bullet(bulletTexture, vector.X + texture.Width / 2, vector.Y);
-                    bullets.Add(temp); //Lägger till skottet i listan
+                    Vector2 playerPosition = new Vector2(vector.X + texture.Width / 2, vector.Y + texture.Height / 2);
 
-                    //Sätt timeSinceLastBullet till detta ögonblick 
+                    MouseState mouse = Mouse.GetState();
+                    Vector2 mousePosition = new Vector2(mouse.X, mouse.Y);
+
+                    Vector2 direction = mousePosition - playerPosition;
+
+                    if(direction != Vector2.Zero)
+                        direction.Normalize();
+
+                    float bulletSpeed = 10f;
+                    Vector2 velocity = direction * bulletSpeed;
+
+                    Bullet temp = new Bullet(bulletTexture, playerPosition.X, playerPosition.Y, velocity.X, velocity.Y);
+                    bullets.Add(temp); 
                     timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+
+
+                    ////Skapa skottet
+                    //Bullet temp = new Bullet(bulletTexture, vector.X + texture.Width / 2, vector.Y, );
+                    //bullets.Add(temp); //Lägger till skottet i listan
+
+                    ////Sätt timeSinceLastBullet till detta ögonblick 
+                    //timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
                 }
             }
 
