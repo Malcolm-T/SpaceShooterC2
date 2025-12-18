@@ -20,6 +20,8 @@ namespace SpaceShooterC2
 
         int points = 0;
 
+        float rotation = 0f;
+
         public float PlayerPosX { get { return vector.X; } }
         public float PlayerPosY { get { return vector.Y; } }
 
@@ -27,6 +29,7 @@ namespace SpaceShooterC2
         public float MousePosY { get { return Mouse.GetState().Y; } }
 
 
+        //Konstruktor
         public Player(Texture2D texture, float X, float Y, float speedX, float speedY, Texture2D bulletTexture) : base(texture, X, Y, speedX, speedY)
         {
             bullets = new List<Bullet>();
@@ -40,6 +43,17 @@ namespace SpaceShooterC2
 
         public void Update(GameWindow gameWindow, GameTime gameTime)
         {
+            //Mus och spelar position
+            MouseState mouse = Mouse.GetState();
+            Vector2 playerCenter = new Vector2(vector.X + texture.Width / 2, vector.Y + texture.Height / 2);
+            Vector2 mousePosition = new Vector2(mouse.X, mouse.Y);
+            Vector2 direction = mousePosition - playerCenter;
+
+            //Rotation
+            rotation = (float)Math.Atan2(direction.Y, direction.X);
+            rotation += MathHelper.PiOver2;
+
+            //Movement
             KeyboardState keyboardState = Keyboard.GetState();
 
             if (keyboardState.IsKeyDown(Keys.D))
@@ -77,7 +91,7 @@ namespace SpaceShooterC2
             }
 
 
-
+            //Bounderies
             if (vector.X < 0)
                 vector.X = 0;
             if(vector.X > gameWindow.ClientBounds.Width - texture.Width)
@@ -89,36 +103,22 @@ namespace SpaceShooterC2
                 vector.Y = gameWindow.ClientBounds.Height - texture.Height;
 
 
+            //Skjutfunktion
             MouseState mouseState = Mouse.GetState();
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 //Kontrollera ifall spelaren får skjuta
                 if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 200)
                 {
-                    Vector2 playerPosition = new Vector2(vector.X + texture.Width / 2, vector.Y + texture.Height / 2);
-
-                    MouseState mouse = Mouse.GetState();
-                    Vector2 mousePosition = new Vector2(mouse.X, mouse.Y);
-
-                    Vector2 direction = mousePosition - playerPosition;
-
                     if(direction != Vector2.Zero)
                         direction.Normalize();
 
                     float bulletSpeed = 10f;
                     Vector2 velocity = direction * bulletSpeed;
 
-                    Bullet temp = new Bullet(bulletTexture, playerPosition.X, playerPosition.Y, velocity.X, velocity.Y);
+                    Bullet temp = new Bullet(bulletTexture, playerCenter.X, playerCenter.Y, velocity.X, velocity.Y);
                     bullets.Add(temp); 
                     timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
-
-
-                    ////Skapa skottet
-                    //Bullet temp = new Bullet(bulletTexture, vector.X + texture.Width / 2, vector.Y, );
-                    //bullets.Add(temp); //Lägger till skottet i listan
-
-                    ////Sätt timeSinceLastBullet till detta ögonblick 
-                    //timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
                 }
             }
 
@@ -135,9 +135,11 @@ namespace SpaceShooterC2
             }
 
 
+            //Avsluta
             if (keyboardState.IsKeyDown(Keys.Escape))
                 isAlive = false;
 
+            //När man tar skada 
             Time = gameTime.TotalGameTime.TotalMilliseconds;
             if(IsInvincible && Time > InvincibleUntil)
                 IsInvincible = false;
@@ -158,7 +160,15 @@ namespace SpaceShooterC2
 
             //Rita spelaren
             if (!blink)
-                spriteBatch.Draw(texture, vector, Color.White);
+            {
+                Vector2 origin = new Vector2(texture.Width/2, texture.Height/2);
+
+                //Mitten av playerd
+                Vector2 drawPosition = new Vector2(vector.X + texture.Width/2, vector.Y + texture.Height/2);
+
+                spriteBatch.Draw(texture, drawPosition, null, Color.White, rotation,origin, 1.0f,SpriteEffects.None, 0f);
+            }
+
             foreach (Bullet b in bullets)
                 b.Draw(spriteBatch);
         }
