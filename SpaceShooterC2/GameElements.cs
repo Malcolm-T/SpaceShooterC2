@@ -20,6 +20,7 @@ namespace SpaceShooterC2
     {
         static Player player; 
         public static Player Player { get { return player; } } //Gör synlig överallt
+        static Texture2D background;
 
         static List<Enemy> enemies;
         static List<Coin> coins; 
@@ -51,6 +52,8 @@ namespace SpaceShooterC2
             menu.AddItem(content.Load<Texture2D>("images/menu/start"), (int)State.Run);
             menu.AddItem(content.Load<Texture2D>("images/menu/highscore"), (int)State.Highscore);
             menu.AddItem(content.Load<Texture2D>("images/menu/exit"), (int)State.Quit);
+
+            background = content.Load<Texture2D>("Kroppen/Bakgrund");
 
             player = new Player(content.Load<Texture2D>("images/player/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("images/player/bullet"));
 
@@ -177,6 +180,8 @@ namespace SpaceShooterC2
 
         public static void RunDraw(SpriteBatch spriteBatch, GameWindow window, GameTime gameTime)
         {
+            spriteBatch.Draw(background, new Rectangle(0, 0, window.ClientBounds.Width, window.ClientBounds.Height), Color.White);
+
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);

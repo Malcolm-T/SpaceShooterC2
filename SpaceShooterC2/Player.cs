@@ -163,7 +163,7 @@ namespace SpaceShooterC2
             {
                 Vector2 origin = new Vector2(texture.Width/2, texture.Height/2);
 
-                //Mitten av playerd
+                //Mitten av player
                 Vector2 drawPosition = new Vector2(vector.X + texture.Width/2, vector.Y + texture.Height/2);
 
                 spriteBatch.Draw(texture, drawPosition, null, Color.White, rotation,origin, 1.0f,SpriteEffects.None, 0f);
