@@ -72,8 +72,6 @@ namespace SpaceShooterC2
 
         }            
 
-        //Test
-
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i<menu.Count; i++)

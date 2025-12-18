@@ -109,6 +109,7 @@ namespace SpaceShooterC2
                     if (enemy.CheckCollision(b))
                     {
                         enemy.IsAlive = false;
+                        b.IsAlive = false;
                         player.Points++;
                     }
                 }
