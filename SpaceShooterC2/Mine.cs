@@ -18,7 +18,7 @@ namespace SpaceShooterC2
             this.player = player;
         }
 
-        public override void Update(GameWindow window)
+        public override void Update(GameWindow window, GameTime gameTime)
         {
             if (player.PlayerPosX > vector.X)
                 vector.X ++;

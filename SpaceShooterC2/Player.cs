@@ -173,7 +173,7 @@ namespace SpaceShooterC2
                 b.Draw(spriteBatch);
         }
 
-
+        
         public void Reset(float X, float Y, float speedX, float speedY)
         {
             vector.X = X;

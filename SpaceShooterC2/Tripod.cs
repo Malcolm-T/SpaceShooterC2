@@ -15,7 +15,7 @@ namespace SpaceShooterC2
 
         }
 
-        public override void Update(GameWindow window)
+        public override void Update(GameWindow window, GameTime gameTime)
         {
             vector.Y += speed.Y;
             if (vector.Y > window.ClientBounds.Height)
