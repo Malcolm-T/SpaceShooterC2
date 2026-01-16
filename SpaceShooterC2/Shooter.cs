@@ -13,7 +13,6 @@ namespace SpaceShooterC2
         //Egenskaper
         private Player player;
         Texture2D bulletTexture;
-        public List<Bullet> Bullets { get { return bullets; } }
         List<Bullet> bullets;
         double timeSinceLastBullet = 0;
 
@@ -23,6 +22,8 @@ namespace SpaceShooterC2
             bullets = new List<Bullet>();
             this.bulletTexture = bulletTexture;
         }
+
+        public List<Bullet> Bullets { get { return bullets; } }
 
         public override void Update(GameWindow window, GameTime gameTime)
         {
@@ -35,24 +36,55 @@ namespace SpaceShooterC2
                 vector.Y++;
             }
 
-                    //Kontrollera ifall spelaren får skjuta
-                    if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 200)
-                    {
-                        if (direction != Vector2.Zero)
-                            direction.Normalize();
+            //Kontrollera när shooter ska skjuta
+            if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 1000)
+            {
+                if (direction != Vector2.Zero)
+                    direction.Normalize();
 
-                        float bulletSpeed = 10f;
-                        Vector2 velocity = direction * bulletSpeed;
+                float bulletSpeed = 10f;
+                Vector2 velocity = direction * bulletSpeed;
 
-                        Bullet temp = new Bullet(bulletTexture, ShooterCenter.X, ShooterCenter.Y, velocity.X, velocity.Y); 
-                        bullets.Add(temp);
-                        timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
-                    }
-                
+                Bullet temp = new Bullet(bulletTexture, ShooterCenter.X, ShooterCenter.Y, velocity.X, velocity.Y);
+                bullets.Add(temp);
+                timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
             }
-            
+
+            //Flytta på alla skott
+            foreach (Bullet b in bullets.ToList())
+            {
+                //Flytta på skottet
+                b.Update();
+                //Kontrollera att skottet inte är dött
+                if (!b.IsAlive)
+                    bullets.Remove(b);
+
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            //Rita skotten
+            foreach (Bullet b in bullets)
+            {
+                b.Draw(spriteBatch);
+            }
         }
 
 
+        public void Reset(float X, float Y, float speedX, float speedY)
+        {
+            vector.X = X;
+            vector.Y = Y;
+            speed.X = speedX;
+            speed.Y = speedY;
+            //Återställ spelarens position och hastighet 
+            bullets.Clear();
+            timeSinceLastBullet = 0;
+
+            //Gör så att spelaren lever igen
+            isAlive = true;
+        }
     }
 }

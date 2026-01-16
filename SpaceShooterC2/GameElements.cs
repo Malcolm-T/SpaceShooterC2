@@ -81,6 +81,16 @@ namespace SpaceShooterC2
                 enemies.Add(temp);
             }
 
+            //Shooter
+            tmpSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
+            for (int i = 0; i < 2WD; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                Shooter temp = new Shooter(tmpSprite, rndX, rndY, player, content.Load<Texture2D>("images/player/bullet"));
+                enemies.Add(temp);
+            }
+
             coinSprite = content.Load<Texture2D>("images/powerups/coin");
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
         }
@@ -101,7 +111,6 @@ namespace SpaceShooterC2
             player.Update(window, gameTime);
 
             //Gå igenom alla fiender
-
             foreach (Enemy enemy in enemies.ToList())
             {
                 foreach (Bullet b in player.Bullets)
@@ -139,11 +148,29 @@ namespace SpaceShooterC2
                             }
                         }
                     }
-                    enemy.Update(window);
+                    enemy.Update(window, gameTime);
                 }
                 else
                     enemies.Remove(enemy);
             }
+
+            //Hit-reg. bullets på player
+            foreach(Enemy enemy in enemies)
+            {
+                if(enemy is Shooter shooter)
+                {
+                    foreach (Bullet b in shooter.Bullets)
+                    {
+                        if (Player.CheckCollision(b))
+                        {
+                            b.IsAlive = false;
+                            liv--;
+                            coolDown = gameTime.TotalGameTime.TotalMilliseconds + 3000;
+                        }
+                    }
+                }
+            }
+
             Random random = new Random();
             int newCoin = random.Next(1, 100);
             if (newCoin == 1)
@@ -236,6 +263,16 @@ namespace SpaceShooterC2
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height / 2);
                 Tripod temp = new Tripod(tmpSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
+
+            //Shooter
+            tmpSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
+            for (int i = 0; i < 5; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                Shooter temp = new Shooter(tmpSprite, rndX, rndY, player, content.Load<Texture2D>("images/player/bullet"));
                 enemies.Add(temp);
             }
 
