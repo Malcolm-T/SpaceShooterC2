@@ -80,7 +80,6 @@ namespace SpaceShooterC2
                     spriteBatch.Draw(menu[i].Texture, new Vector2(menu[i].Position.X, menu[i].Position.Y), Color.RosyBrown);
                 else
                     spriteBatch.Draw(menu[i].Texture, menu[i].Position, Color.White);
-
             }
         }
 

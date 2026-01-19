@@ -13,17 +13,17 @@ namespace SpaceShooterC2
         //Egenskaper
         private Player player;
         Texture2D bulletTexture;
-        List<Bullet> bullets;
+        List<EnemyBullet> bullets;
         double timeSinceLastBullet = 0;
 
         public Shooter(Texture2D texture, float X, float Y, Player player, Texture2D bulletTexture) : base(texture, X, Y, 6f, 0.3f)
         {
             this.player = player;
-            bullets = new List<Bullet>();
+            bullets = new List<EnemyBullet>();
             this.bulletTexture = bulletTexture;
         }
 
-        public List<Bullet> Bullets { get { return bullets; } }
+        public List<EnemyBullet> Bullets { get { return bullets; } }
 
         public override void Update(GameWindow window, GameTime gameTime)
         {
@@ -31,7 +31,7 @@ namespace SpaceShooterC2
             Vector2 PlayerCenter = new Vector2(player.PlayerPosX, player.PlayerPosY);
             Vector2 direction = PlayerCenter - ShooterCenter;
 
-            if (vector.Y > 100)
+            if (vector.Y < 100)
             {
                 vector.Y++;
             }
@@ -45,13 +45,13 @@ namespace SpaceShooterC2
                 float bulletSpeed = 10f;
                 Vector2 velocity = direction * bulletSpeed;
 
-                Bullet temp = new Bullet(bulletTexture, ShooterCenter.X, ShooterCenter.Y, velocity.X, velocity.Y);
+                EnemyBullet temp = new EnemyBullet(bulletTexture, ShooterCenter.X, ShooterCenter.Y, velocity.X, velocity.Y);
                 bullets.Add(temp);
                 timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
             //Flytta på alla skott
-            foreach (Bullet b in bullets.ToList())
+            foreach (EnemyBullet b in bullets.ToList())
             {
                 //Flytta på skottet
                 b.Update();
@@ -66,7 +66,7 @@ namespace SpaceShooterC2
         {
             base.Draw(spriteBatch);
             //Rita skotten
-            foreach (Bullet b in bullets)
+            foreach (EnemyBullet b in bullets)
             {
                 b.Draw(spriteBatch);
             }

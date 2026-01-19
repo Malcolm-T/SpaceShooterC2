@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.IO;
 
 //using System.Numerics;
 using System.Text;
@@ -40,6 +41,7 @@ namespace SpaceShooterC2
         public enum State { Menu, Run, Highscore, Quit};
         public static State currentState;
         static Menu menu;
+        static Highscore highscore;
 
         public static void Initialize()
         {
@@ -83,7 +85,7 @@ namespace SpaceShooterC2
 
             //Shooter
             tmpSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
-            for (int i = 0; i < 2WD; i++)
+            for (int i = 0; i < 2; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height / 2);
@@ -107,6 +109,7 @@ namespace SpaceShooterC2
 
         public static State RunUpdate(ContentManager content, GameWindow window, GameTime gameTime)
         {
+
             //Uppdatera spelarens position
             player.Update(window, gameTime);
 
@@ -141,11 +144,6 @@ namespace SpaceShooterC2
                             liv--;
                             coolDown = gameTime.TotalGameTime.TotalMilliseconds + 3000;
                             
-
-                            if (liv == 0)
-                            {
-                                player.IsAlive = false;
-                            }
                         }
                     }
                     enemy.Update(window, gameTime);
@@ -159,13 +157,16 @@ namespace SpaceShooterC2
             {
                 if(enemy is Shooter shooter)
                 {
-                    foreach (Bullet b in shooter.Bullets)
+                    foreach (EnemyBullet b in shooter.Bullets)
                     {
-                        if (Player.CheckCollision(b))
+                        if (skadlig)
                         {
-                            b.IsAlive = false;
-                            liv--;
-                            coolDown = gameTime.TotalGameTime.TotalMilliseconds + 3000;
+                            if (Player.CheckCollision(b))
+                            {
+                                b.IsAlive = false;
+                                liv--;
+                                coolDown = gameTime.TotalGameTime.TotalMilliseconds + 3000;
+                            }
                         }
                     }
                 }
@@ -201,6 +202,19 @@ namespace SpaceShooterC2
                 Reset(window, content);
                 return State.Menu;
             }
+
+
+            if (liv <= 0)
+            {
+                player.IsAlive = false;
+                using (StreamWriter writer = new StreamWriter("highscore.txt", true))
+                {
+                    writer.WriteLine(player.Points + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
+                }
+                highscore = new Highscore();
+                return State.Highscore;
+            }
+           
             return State.Run;
 
         }
@@ -230,7 +244,7 @@ namespace SpaceShooterC2
             KeyboardState keyboardState = Keyboard.GetState();
 
             //Återgå till meny om man klickar esc
-            if (keyboardState.IsKeyDown(Keys.Escape))
+            if (keyboardState.IsKeyDown(Keys.Space))
                 return State.Menu;
             return State.Highscore;
         }
@@ -238,6 +252,17 @@ namespace SpaceShooterC2
         public static void HighscoreDraw(SpriteBatch spriteBatch)
         {
             //Rita ut highscore-listan 
+            printText.Print("HIGHSCORE", spriteBatch, 300, 50);
+
+            int y = 100;
+            int plats = 1;
+
+            foreach(Spelare s in highscore.Scores.Take(10))
+            {
+                printText.Print(plats + ". " + s.Poäng + "   " + s.Datum, spriteBatch, 250, y);
+                y += 30;
+                plats++;
+            }
         }
 
         private static void Reset(GameWindow window, ContentManager content)
