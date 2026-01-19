@@ -240,9 +240,10 @@ namespace SpaceShooterC2
             int y = 100;
             int plats = 1;
 
-            foreach(Spelare s in highscore.Scores.Take(10))
+            //Utskrift av topplista
+            for (int i = 0; i<5; i++)
             {
-                printText.Print(plats + ". " + s.Poäng + "   " + s.Datum, spriteBatch, 250, y);
+                printText.Print(plats + ". " + highscore.Scores[i].Poäng + "   " + highscore.Scores[i].Datum, spriteBatch, 250, y);
                 y += 30;
                 plats++;
             }
