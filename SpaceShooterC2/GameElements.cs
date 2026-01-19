@@ -28,8 +28,9 @@ namespace SpaceShooterC2
         static Texture2D coinSprite;
         static PrintText printText;
 
-        //Mus position
-
+        //Level
+        static int level = 1;
+        static int enemiesKilled = 0;
 
         //Liv
         static int liv = 3;
@@ -61,38 +62,8 @@ namespace SpaceShooterC2
 
 
             //Skapa Fiender
-            //Mina
             enemies = new List<Enemy>();
-            Random random = new Random();
-            Texture2D tmpSprite = content.Load<Texture2D>("images/player/enemies/mine");
-            for (int i = 0; i < 5; i++)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
-                Mine temp = new Mine(tmpSprite, rndX, rndY, player);
-                enemies.Add(temp); //Lägg till i listan
-            }
-
-            //Tripod
-            tmpSprite = content.Load<Texture2D>("images/player/enemies/tripod");
-            for (int i = 0; i < 5; i++)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
-                Tripod temp = new Tripod(tmpSprite, rndX, rndY);
-                enemies.Add(temp);
-            }
-
-            //Shooter
-            tmpSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
-            for (int i = 0; i < 2; i++)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
-                Shooter temp = new Shooter(tmpSprite, rndX, rndY, player, content.Load<Texture2D>("images/player/bullet"));
-                enemies.Add(temp);
-            }
-
+            SpawnEnemies(window, content);
             coinSprite = content.Load<Texture2D>("images/powerups/coin");
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
         }
@@ -123,6 +94,7 @@ namespace SpaceShooterC2
                         enemy.IsAlive = false;
                         b.IsAlive = false;
                         player.Points++;
+                        enemiesKilled++;
                     }
                 }
                 if (enemy.IsAlive)
@@ -197,6 +169,16 @@ namespace SpaceShooterC2
                 else
                     coins.Remove(c);
             }
+
+            //Checkar om level upp
+            if(enemies.Count == 0)
+            {
+                level++;
+                enemiesKilled = 0;
+                SpawnEnemies(window, content);
+            }
+
+
             if (!player.IsAlive)
             {
                 Reset(window, content);
@@ -236,6 +218,7 @@ namespace SpaceShooterC2
             if (gameTime.TotalGameTime.TotalMilliseconds - coolDown < 0)
                 printText.Print(Math.Round((gameTime.TotalGameTime.TotalMilliseconds - coolDown)).ToString(), spriteBatch, 100, 0);
 
+            printText.Print("Level: " + level, spriteBatch, 0, 30);
 
         }
 
@@ -268,41 +251,53 @@ namespace SpaceShooterC2
         private static void Reset(GameWindow window, ContentManager content)
         {
             player.Reset(380, 400, 2.5f, 4.5f);
-            
-            //Skapa fiender
-            enemies.Clear();
-            Random random = new Random();
-            Texture2D tmpSprite = content.Load<Texture2D>("images/player/Enemies/mine");
-            for(int i = 0; i < 5; i++)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height/2);
-                Mine temp = new Mine(tmpSprite, rndX, rndY, player);
-                enemies.Add(temp); //Lägg till i listan
-            }
 
-            //Tripod
-            tmpSprite = content.Load<Texture2D>("images/player/enemies/tripod");
-            for (int i = 0; i < 5; i++)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
-                Tripod temp = new Tripod(tmpSprite, rndX, rndY);
-                enemies.Add(temp);
-            }
-
-            //Shooter
-            tmpSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
-            for (int i = 0; i < 5; i++)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
-                Shooter temp = new Shooter(tmpSprite, rndX, rndY, player, content.Load<Texture2D>("images/player/bullet"));
-                enemies.Add(temp);
-            }
+            level = 1;
+            SpawnEnemies(window, content);
 
             liv = 3; 
         }
+
+
+        static void SpawnEnemies(GameWindow window, ContentManager content)
+        {
+            enemies.Clear();
+            Random random = new Random();
+
+            int mines = 3 + level;
+            int tripods = 2 + level/2;
+            int shooters = level>=3 ? level-2 : 0;
+
+            Texture2D mineSprite = content.Load<Texture2D>("images/player/enemies/mine");
+            Texture2D tripodSprite = content.Load<Texture2D>("images/player/enemies/tripod");
+            Texture2D shooterSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
+
+            for (int i = 0; i < mines; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                Mine temp = new Mine(mineSprite, rndX, rndY, player);
+                enemies.Add(temp); //Lägg till i listan
+            }
+
+            for (int i = 0; i < tripods; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                Tripod temp = new Tripod(tripodSprite, rndX, rndY);
+                enemies.Add(temp);
+            }
+
+            for(int i = 0; i < shooters; i++)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - shooterSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                Shooter temp = new Shooter(shooterSprite, rndX, rndY, player, content.Load<Texture2D>("images/player/Enemies/evilBullet"));
+                enemies.Add(temp);
+            }
+
+        }
+
 
     }
 }
