@@ -24,8 +24,14 @@ namespace SpaceShooterC2
         static Texture2D background;
 
         static List<Enemy> enemies;
+        //Coins
         static List<Coin> coins; 
         static Texture2D coinSprite;
+
+        //Hearts
+        static List<Heart> hearts;
+        static Texture2D heartsprite;
+
         static PrintText printText;
 
         //Level
@@ -47,6 +53,7 @@ namespace SpaceShooterC2
         public static void Initialize()
         {
             coins = new List<Coin>();
+            hearts = new List<Heart>();
         }
 
         public static void LoadContent(ContentManager content, GameWindow window)
@@ -65,6 +72,7 @@ namespace SpaceShooterC2
             enemies = new List<Enemy>();
             SpawnEnemies(window, content);
             coinSprite = content.Load<Texture2D>("images/powerups/coin");
+            heartsprite = content.Load<Texture2D>("images/powerups/Hjärta1");
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
         }
 
@@ -144,6 +152,8 @@ namespace SpaceShooterC2
                 }
             }
 
+
+            //Coins
             Random random = new Random();
             int newCoin = random.Next(1, 100);
             if (newCoin == 1)
@@ -170,8 +180,40 @@ namespace SpaceShooterC2
                     coins.Remove(c);
             }
 
+            //Hearts
+            int newHeart = random.Next(1, 400);
+            if (newHeart == 1)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - heartsprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height - heartsprite.Height);
+
+                hearts.Add(new Heart(heartsprite, rndX, rndY, gameTime));
+            }
+
+            foreach (Heart h in hearts.ToList())
+            {
+                if (h.IsAlive)
+                {
+                    h.Update(gameTime);
+                     
+                    if (h.CheckCollision(player))
+                    {
+                        if(liv < 5)
+                        {
+                            hearts.Remove(h); 
+                            liv++;
+                        }
+                        else
+                            hearts.Remove(h);
+                    }
+                }
+                else
+                    hearts.Remove(h);
+            }
+
+
             //Checkar om level upp
-            if(enemies.Count == 0)
+            if (enemies.Count == 0)
             {
                 level++;
                 enemiesKilled = 0;
@@ -211,6 +253,8 @@ namespace SpaceShooterC2
                 e.Draw(spriteBatch);
             foreach(Coin c in coins.ToList())
                 c.Draw(spriteBatch);
+            foreach (Heart h in hearts.ToList())
+                h.Draw(spriteBatch);
             printText.Print("Points" + player.Points, spriteBatch, 0, 0);
 
             //Liv
