@@ -157,6 +157,18 @@
 /processorParam:TextureFormat=Color
 /build:images/powerups/Hjärta1.png
 
+#begin images/powerups/Rapidfire.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/powerups/Rapidfire.png
+
 #begin Kroppen/Bakgrund.png
 /importer:TextureImporter
 /processor:TextureProcessor

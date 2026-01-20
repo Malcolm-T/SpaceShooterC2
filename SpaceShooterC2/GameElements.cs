@@ -24,6 +24,7 @@ namespace SpaceShooterC2
         static Texture2D background;
 
         static List<Enemy> enemies;
+
         //Coins
         static List<Coin> coins; 
         static Texture2D coinSprite;
@@ -31,6 +32,10 @@ namespace SpaceShooterC2
         //Hearts
         static List<Heart> hearts;
         static Texture2D heartsprite;
+
+        //Rapidfire
+        static List<Rapidfire> rapidFires;
+        static Texture2D rapidFireSprite;
 
         static PrintText printText;
 
@@ -71,8 +76,11 @@ namespace SpaceShooterC2
             //Skapa Fiender
             enemies = new List<Enemy>();
             SpawnEnemies(window, content);
-            coinSprite = content.Load<Texture2D>("images/powerups/coin");
-            heartsprite = content.Load<Texture2D>("images/powerups/Hjärta1");
+            coinSprite = content.Load<Texture2D>("images/powerups/coin"); //Coin sprite
+            heartsprite = content.Load<Texture2D>("images/powerups/Hjärta1"); //Heart sprite
+            rapidFireSprite = content.Load<Texture2D>("images/powerups/Rapidfire"); //Rapidfire sprite
+
+
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
         }
 
@@ -198,7 +206,7 @@ namespace SpaceShooterC2
                      
                     if (h.CheckCollision(player))
                     {
-                        if(liv < 5)
+                        if(liv < 3)
                         {
                             hearts.Remove(h); 
                             liv++;
@@ -209,6 +217,31 @@ namespace SpaceShooterC2
                 }
                 else
                     hearts.Remove(h);
+            }
+
+            //Hearts
+            int newRapidFire = random.Next(1, 400);
+            if (newRapidFire == 1)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - rapidFireSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height - rapidFireSprite.Height);
+
+                rapidFires.Add(new Rapidfire(rapidFireSprite, rndX, rndY, gameTime));
+            }
+
+            foreach (Rapidfire r in rapidFires.ToList())
+            {
+                if (r.IsAlive)
+                {
+                    r.Update(gameTime);
+
+                    if (r.CheckCollision(player))
+                    {
+
+                    }
+                }
+                else
+                    rapidFires.Remove(r);
             }
 
 
@@ -255,6 +288,9 @@ namespace SpaceShooterC2
                 c.Draw(spriteBatch);
             foreach (Heart h in hearts.ToList())
                 h.Draw(spriteBatch);
+            foreach (Rapidfire r in rapidFires.ToList())
+                r.Draw(spriteBatch);
+
             printText.Print("Points" + player.Points, spriteBatch, 0, 0);
 
             //Liv
