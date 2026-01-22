@@ -15,6 +15,7 @@ namespace SpaceShooterC2
         Texture2D bulletTexture;
         List<EnemyBullet> bullets;
         double timeSinceLastBullet = 0;
+        float rotation = 0f;
 
         public Shooter(Texture2D texture, float X, float Y, Player player, Texture2D bulletTexture) : base(texture, X, Y, 6f, 0.3f)
         {
@@ -30,6 +31,10 @@ namespace SpaceShooterC2
             Vector2 ShooterCenter = new Vector2(vector.X + texture.Width / 2, vector.Y + texture.Height / 2);
             Vector2 PlayerCenter = new Vector2(player.PlayerPosX, player.PlayerPosY);
             Vector2 direction = PlayerCenter - ShooterCenter;
+
+            //Rotation
+            rotation = (float)Math.Atan2(direction.Y, direction.X);
+            rotation += MathHelper.PiOver2;
 
             if (vector.Y < 100)
             {

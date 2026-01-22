@@ -12,6 +12,7 @@ using System.IO;
 //using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.Design;
 
 namespace SpaceShooterC2
 {
@@ -59,6 +60,7 @@ namespace SpaceShooterC2
         {
             coins = new List<Coin>();
             hearts = new List<Heart>();
+            rapidFires = new List<Rapidfire>();
         }
 
         public static void LoadContent(ContentManager content, GameWindow window)
@@ -321,12 +323,28 @@ namespace SpaceShooterC2
             int plats = 1;
 
             //Utskrift av topplista
-            for (int i = 0; i<5; i++)
+            if(highscore.Scores.Count > 5)
             {
-                printText.Print(plats + ". " + highscore.Scores[i].Poäng + "   " + highscore.Scores[i].Datum, spriteBatch, 250, y);
-                y += 30;
-                plats++;
+                for (int i = 0; i < 5; i++)
+                {
+                    printText.Print(plats + ". " + highscore.Scores[i].Poäng + "   " + highscore.Scores[i].Datum, spriteBatch, 250, y);
+                    y += 30;
+                    plats++;
+                }
             }
+            else
+            {
+                for (int i = 0; i < highscore.Scores.Count; i++)
+                {
+                    printText.Print(plats + ". " + highscore.Scores[i].Poäng + "   " + highscore.Scores[i].Datum, spriteBatch, 250, y);
+                    y += 30;
+                    plats++;
+                }
+            }
+
+            printText.Print("Tryck space", spriteBatch, 300, 300);
+
+
         }
 
         private static void Reset(GameWindow window, ContentManager content)
