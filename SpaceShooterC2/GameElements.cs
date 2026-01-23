@@ -49,6 +49,8 @@ namespace SpaceShooterC2
         static double coolDown;
         static bool skadlig = true;
 
+        static bool sparatScore = false;
+
 
         //Olika gamestates
         public enum State { Menu, Run, Highscore, Quit};
@@ -65,6 +67,7 @@ namespace SpaceShooterC2
 
         public static void LoadContent(ContentManager content, GameWindow window)
         {
+            //Menu
             menu = new Menu((int)State.Menu);
             menu.AddItem(content.Load<Texture2D>("images/menu/start"), (int)State.Run);
             menu.AddItem(content.Load<Texture2D>("images/menu/highscore"), (int)State.Highscore);
@@ -265,15 +268,22 @@ namespace SpaceShooterC2
 
             if (liv <= 0)
             {
-                player.IsAlive = false;
-                using (StreamWriter writer = new StreamWriter("highscore.txt", true))
+                if (!sparatScore)
                 {
-                    writer.WriteLine(player.Points + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
+                    using (StreamWriter writer = new StreamWriter("highscore.txt", true))
+                    {
+                        writer.WriteLine(player.Points + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
+                    }
+
+                    highscore = new Highscore();
+                    sparatScore = true;
                 }
-                highscore = new Highscore();
+
+
+
+                player.IsAlive = false;
                 return State.Highscore;
             }
-           
             return State.Run;
 
         }
@@ -318,16 +328,20 @@ namespace SpaceShooterC2
 
             //Återgå till meny om man klickar esc
             if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                sparatScore = false;
                 return State.Menu;
+            }
             return State.Highscore;
         }
 
         public static void HighscoreDraw(SpriteBatch spriteBatch)
         {
             //Rita ut highscore-listan 
-            printText.Print("HIGHSCORE", spriteBatch, 300, 50);
+            printText.Print("HIGHSCORE", spriteBatch, 300, 70);
+            printText.Print(Player.Points.ToString(), spriteBatch, 300, 30);
 
-            int y = 100;
+            int y = 120;
             int plats = 1;
 
             //Utskrift av topplista
@@ -382,7 +396,7 @@ namespace SpaceShooterC2
             for (int i = 0; i < mines; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                int rndY = random.Next(- 50, 0);
                 Mine temp = new Mine(mineSprite, rndX, rndY, player);
                 enemies.Add(temp); //Lägg till i listan
             }
@@ -390,7 +404,7 @@ namespace SpaceShooterC2
             for (int i = 0; i < tripods; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                int rndY = random.Next(- 50, 0);
                 Tripod temp = new Tripod(tripodSprite, rndX, rndY);
                 enemies.Add(temp);
             }
@@ -398,7 +412,7 @@ namespace SpaceShooterC2
             for(int i = 0; i < shooters; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - shooterSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height / 2);
+                int rndY = random.Next(-50,0);
                 Shooter temp = new Shooter(shooterSprite, rndX, rndY, player, content.Load<Texture2D>("images/player/Enemies/evilBullet"));
                 enemies.Add(temp);
             }
