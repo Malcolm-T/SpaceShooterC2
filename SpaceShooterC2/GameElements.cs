@@ -296,7 +296,15 @@ namespace SpaceShooterC2
             printText.Print("Points" + player.Points, spriteBatch, 0, 0);
 
             //Liv
-            printText.Print("Liv: " + liv, spriteBatch, window.ClientBounds.Width - 50, 0);
+            //printText.Print("Liv: " + liv, spriteBatch, window.ClientBounds.Width - 50, 0);
+            int heartsX = window.ClientBounds.Width - 50;
+            int heartsY = 10;
+            int spacing = heartsprite.Width + 10;
+            for(int i = 0; i < liv; i++)
+            {
+                spriteBatch.Draw(heartsprite, new Vector2(heartsX - i * spacing, heartsY), Color.White);
+            }
+
             if (gameTime.TotalGameTime.TotalMilliseconds - coolDown < 0)
                 printText.Print(Math.Round((gameTime.TotalGameTime.TotalMilliseconds - coolDown)).ToString(), spriteBatch, 100, 0);
 
