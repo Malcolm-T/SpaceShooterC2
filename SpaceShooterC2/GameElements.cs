@@ -339,7 +339,7 @@ namespace SpaceShooterC2
         {
             //Rita ut highscore-listan 
             printText.Print("HIGHSCORE", spriteBatch, 300, 70);
-            printText.Print(Player.Points.ToString(), spriteBatch, 300, 30);
+            printText.Print(Player.Points.ToString() + " points", spriteBatch, 300, 30);
 
             int y = 120;
             int plats = 1;
