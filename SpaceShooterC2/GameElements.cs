@@ -242,7 +242,8 @@ namespace SpaceShooterC2
 
                     if (r.CheckCollision(player))
                     {
-
+                        player.harRapidfire = true;
+                        r.IsAlive = false;
                     }
                 }
                 else
