@@ -389,8 +389,8 @@ namespace SpaceShooterC2
             int tripods = 2 + level/2;
             int shooters = level>=3 ? level-2 : 0;
 
-            Texture2D mineSprite = content.Load<Texture2D>("images/player/enemies/mine");
-            Texture2D tripodSprite = content.Load<Texture2D>("images/player/enemies/tripod");
+            Texture2D mineSprite = content.Load<Texture2D>("Kroppen/Virus1");
+            Texture2D tripodSprite = content.Load<Texture2D>("Kroppen/Virus2");
             Texture2D shooterSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
 
             for (int i = 0; i < mines; i++)
