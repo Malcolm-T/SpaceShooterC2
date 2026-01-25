@@ -23,6 +23,7 @@ namespace SpaceShooterC2
         static Player player; 
         public static Player Player { get { return player; } } //Gör synlig överallt
         static Texture2D background;
+        static Texture2D Title;
 
         static List<Enemy> enemies;
 
@@ -37,6 +38,7 @@ namespace SpaceShooterC2
         //Rapidfire
         static List<Rapidfire> rapidFires;
         static Texture2D rapidFireSprite;
+        static double rapidTimer;
 
         static PrintText printText;
 
@@ -77,6 +79,9 @@ namespace SpaceShooterC2
 
             player = new Player(content.Load<Texture2D>("images/player/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("images/player/bullet"));
 
+            //Title
+            Title = content.Load<Texture2D>("Kroppen/CellWars");
+
 
             //Skapa Fiender
             enemies = new List<Enemy>();
@@ -91,12 +96,14 @@ namespace SpaceShooterC2
 
         public static State MenuUpdate(GameTime gameTime)
         {
+
             return (State)menu.Update(gameTime);
         }
 
         public static void MenuDraw(SpriteBatch spriteBatch)
         {
             menu.Draw(spriteBatch);
+            spriteBatch.Draw(Title, new Vector2(105,20), null, Color.White, 0f, Vector2.Zero,0.3f, SpriteEffects.None, 0f);
         }
 
         public static State RunUpdate(ContentManager content, GameWindow window, GameTime gameTime)
@@ -224,8 +231,8 @@ namespace SpaceShooterC2
                     hearts.Remove(h);
             }
 
-            //Hearts
-            int newRapidFire = random.Next(1, 400);
+            //Rapidfire
+            int newRapidFire = random.Next(1, 1000);
             if (newRapidFire == 1)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - rapidFireSprite.Width);
@@ -233,6 +240,8 @@ namespace SpaceShooterC2
 
                 rapidFires.Add(new Rapidfire(rapidFireSprite, rndX, rndY, gameTime));
             }
+
+
 
             foreach (Rapidfire r in rapidFires.ToList())
             {
@@ -244,11 +253,14 @@ namespace SpaceShooterC2
                     {
                         player.harRapidfire = true;
                         r.IsAlive = false;
+                        rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
                     }
                 }
                 else
                     rapidFires.Remove(r);
             }
+            if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
+                player.harRapidfire = false;
 
 
             //Checkar om level upp
