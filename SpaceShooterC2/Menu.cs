@@ -16,7 +16,7 @@ namespace SpaceShooterC2
         int selected = 0; //Färsta valet i listan är valt
 
         //currentHeigh används för att rita ut menuItems på olika höjd
-        float currentHeight = 0;
+        float currentHeight = 150;
 
         //Lastchange används för att "pausa" tangentbordtryckningar
         double lastChange = 0;
@@ -31,7 +31,7 @@ namespace SpaceShooterC2
 
         public void AddItem(Texture2D itemTexture, int state)
         {
-            float X = 0; 
+            float X = 200; 
             float Y = 0 + currentHeight;
 
             currentHeight += itemTexture.Height + 20;
