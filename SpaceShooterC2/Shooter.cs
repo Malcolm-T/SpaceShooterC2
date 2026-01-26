@@ -69,7 +69,10 @@ namespace SpaceShooterC2
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            Vector2 rotationspunkt = new Vector2(texture.Width/2, texture.Height/2);
+
+            spriteBatch.Draw(texture, new Vector2(vector.X + texture.Width, vector.Y + texture.Height / 2), null, Color.White, rotation, rotationspunkt, 1.0f, SpriteEffects.None, 0f);
+
             //Rita skotten
             foreach (EnemyBullet b in bullets)
             {

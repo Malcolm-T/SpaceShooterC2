@@ -316,7 +316,7 @@ namespace SpaceShooterC2
             foreach (Rapidfire r in rapidFires.ToList())
                 r.Draw(spriteBatch);
 
-            printText.Print("Points" + player.Points, spriteBatch, 0, 0);
+            printText.Print("Points " + player.Points, spriteBatch, 0, 0);
 
             //Liv
             //printText.Print("Liv: " + liv, spriteBatch, window.ClientBounds.Width - 50, 0);
@@ -404,7 +404,7 @@ namespace SpaceShooterC2
 
             Texture2D mineSprite = content.Load<Texture2D>("Kroppen/Virus1");
             Texture2D tripodSprite = content.Load<Texture2D>("Kroppen/Virus2");
-            Texture2D shooterSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
+            Texture2D shooterSprite = content.Load<Texture2D>("Kroppen/Shooter2");
 
             for (int i = 0; i < mines; i++)
             {
