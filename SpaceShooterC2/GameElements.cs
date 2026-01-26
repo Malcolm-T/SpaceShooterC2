@@ -328,10 +328,10 @@ namespace SpaceShooterC2
                 spriteBatch.Draw(heartsprite, new Vector2(heartsX - i * spacing, heartsY), Color.White);
             }
 
-            if (gameTime.TotalGameTime.TotalMilliseconds - coolDown < 0)
-                printText.Print(Math.Round((gameTime.TotalGameTime.TotalMilliseconds - coolDown)).ToString(), spriteBatch, 100, 0);
+            //if (gameTime.TotalGameTime.TotalMilliseconds - coolDown < 0)
+                //printText.Print(Math.Round((gameTime.TotalGameTime.TotalMilliseconds - coolDown)).ToString(), spriteBatch, 100, 0);
 
-            printText.Print("Level: " + level, spriteBatch, 0, 30);
+            printText.Print("Level: " + level, spriteBatch, 0, 30); 
 
         }
 
