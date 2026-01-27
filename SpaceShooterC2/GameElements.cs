@@ -303,8 +303,10 @@ namespace SpaceShooterC2
 
         public static void RunDraw(SpriteBatch spriteBatch, GameWindow window, GameTime gameTime)
         {
+            //Bakgrund
             spriteBatch.Draw(background, new Rectangle(0, 0, window.ClientBounds.Width, window.ClientBounds.Height), Color.White);
 
+            //Rita ut spelare och fiender
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);
@@ -318,7 +320,6 @@ namespace SpaceShooterC2
             printText.Print("Points " + player.Points, spriteBatch, 0, 0);
 
             //Liv
-            //printText.Print("Liv: " + liv, spriteBatch, window.ClientBounds.Width - 50, 0);
             int heartsX = window.ClientBounds.Width - 50;
             int heartsY = 10;
             int spacing = heartsprite.Width + 10;
@@ -327,8 +328,6 @@ namespace SpaceShooterC2
                 spriteBatch.Draw(heartsprite, new Vector2(heartsX - i * spacing, heartsY), Color.White);
             }
 
-            //if (gameTime.TotalGameTime.TotalMilliseconds - coolDown < 0)
-                //printText.Print(Math.Round((gameTime.TotalGameTime.TotalMilliseconds - coolDown)).ToString(), spriteBatch, 100, 0);
 
             printText.Print("Level: " + level, spriteBatch, 0, 30); 
 
@@ -396,14 +395,18 @@ namespace SpaceShooterC2
             enemies.Clear();
             Random random = new Random();
 
+            //Antal fiender baserat på level
             int mines = 3 + level;
             int tripods = 2 + level/2;
             int shooters = level>=3 ? level-2 : 0;
 
+            //Sprites
             Texture2D mineSprite = content.Load<Texture2D>("Kroppen/Virus1");
             Texture2D tripodSprite = content.Load<Texture2D>("Kroppen/Virus2");
             Texture2D shooterSprite = content.Load<Texture2D>("Kroppen/Shooter2");
 
+
+            //Skapa fiender
             for (int i = 0; i < mines; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
