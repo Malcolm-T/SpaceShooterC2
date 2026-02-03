@@ -23,6 +23,7 @@ namespace SpaceShooterC2
         static Player player; 
         public static Player Player { get { return player; } } //Gör synlig överallt
         static Texture2D background;
+        static Texture2D Title;
 
         static List<Enemy> enemies;
 
@@ -37,6 +38,7 @@ namespace SpaceShooterC2
         //Rapidfire
         static List<Rapidfire> rapidFires;
         static Texture2D rapidFireSprite;
+        static double rapidTimer;
 
         static PrintText printText;
 
@@ -77,6 +79,9 @@ namespace SpaceShooterC2
 
             player = new Player(content.Load<Texture2D>("images/player/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("images/player/bullet"));
 
+            //Title
+            Title = content.Load<Texture2D>("Kroppen/CellWars");
+
 
             //Skapa Fiender
             enemies = new List<Enemy>();
@@ -91,12 +96,14 @@ namespace SpaceShooterC2
 
         public static State MenuUpdate(GameTime gameTime)
         {
+
             return (State)menu.Update(gameTime);
         }
 
         public static void MenuDraw(SpriteBatch spriteBatch)
         {
             menu.Draw(spriteBatch);
+            spriteBatch.Draw(Title, new Vector2(105,20), null, Color.White, 0f, Vector2.Zero,0.3f, SpriteEffects.None, 0f);
         }
 
         public static State RunUpdate(ContentManager content, GameWindow window, GameTime gameTime)
@@ -224,8 +231,8 @@ namespace SpaceShooterC2
                     hearts.Remove(h);
             }
 
-            //Hearts
-            int newRapidFire = random.Next(1, 400);
+            //Rapidfire
+            int newRapidFire = random.Next(1, 1000);
             if (newRapidFire == 1)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - rapidFireSprite.Width);
@@ -233,6 +240,8 @@ namespace SpaceShooterC2
 
                 rapidFires.Add(new Rapidfire(rapidFireSprite, rndX, rndY, gameTime));
             }
+
+
 
             foreach (Rapidfire r in rapidFires.ToList())
             {
@@ -242,12 +251,16 @@ namespace SpaceShooterC2
 
                     if (r.CheckCollision(player))
                     {
-
+                        player.harRapidfire = true;
+                        r.IsAlive = false;
+                        rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
                     }
                 }
                 else
                     rapidFires.Remove(r);
             }
+            if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
+                player.harRapidfire = false;
 
 
             //Checkar om level upp
@@ -290,8 +303,10 @@ namespace SpaceShooterC2
 
         public static void RunDraw(SpriteBatch spriteBatch, GameWindow window, GameTime gameTime)
         {
+            //Bakgrund
             spriteBatch.Draw(background, new Rectangle(0, 0, window.ClientBounds.Width, window.ClientBounds.Height), Color.White);
 
+            //Rita ut spelare och fiender
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);
@@ -302,10 +317,9 @@ namespace SpaceShooterC2
             foreach (Rapidfire r in rapidFires.ToList())
                 r.Draw(spriteBatch);
 
-            printText.Print("Points" + player.Points, spriteBatch, 0, 0);
+            printText.Print("Points " + player.Points, spriteBatch, 0, 0);
 
             //Liv
-            //printText.Print("Liv: " + liv, spriteBatch, window.ClientBounds.Width - 50, 0);
             int heartsX = window.ClientBounds.Width - 50;
             int heartsY = 10;
             int spacing = heartsprite.Width + 10;
@@ -314,10 +328,8 @@ namespace SpaceShooterC2
                 spriteBatch.Draw(heartsprite, new Vector2(heartsX - i * spacing, heartsY), Color.White);
             }
 
-            if (gameTime.TotalGameTime.TotalMilliseconds - coolDown < 0)
-                printText.Print(Math.Round((gameTime.TotalGameTime.TotalMilliseconds - coolDown)).ToString(), spriteBatch, 100, 0);
 
-            printText.Print("Level: " + level, spriteBatch, 0, 30);
+            printText.Print("Level: " + level, spriteBatch, 0, 30); 
 
         }
 
@@ -337,7 +349,7 @@ namespace SpaceShooterC2
         {
             //Rita ut highscore-listan 
             printText.Print("HIGHSCORE", spriteBatch, 300, 70);
-            printText.Print(Player.Points.ToString(), spriteBatch, 300, 30);
+            printText.Print(Player.Points.ToString() + " points", spriteBatch, 300, 30);
 
             int y = 120;
             int plats = 1;
@@ -383,14 +395,18 @@ namespace SpaceShooterC2
             enemies.Clear();
             Random random = new Random();
 
+            //Antal fiender baserat på level
             int mines = 3 + level;
             int tripods = 2 + level/2;
             int shooters = level>=3 ? level-2 : 0;
 
-            Texture2D mineSprite = content.Load<Texture2D>("images/player/enemies/mine");
-            Texture2D tripodSprite = content.Load<Texture2D>("images/player/enemies/tripod");
-            Texture2D shooterSprite = content.Load<Texture2D>("Nya Sprites/Enemies/Shootertemp");
+            //Sprites
+            Texture2D mineSprite = content.Load<Texture2D>("Kroppen/Virus1");
+            Texture2D tripodSprite = content.Load<Texture2D>("Kroppen/Virus2");
+            Texture2D shooterSprite = content.Load<Texture2D>("Kroppen/Shooter2");
 
+
+            //Skapa fiender
             for (int i = 0; i < mines; i++)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
