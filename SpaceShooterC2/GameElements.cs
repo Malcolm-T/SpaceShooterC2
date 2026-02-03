@@ -274,7 +274,6 @@ namespace SpaceShooterC2
                     {
                         writer.WriteLine(player.Points + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
                     }
-
                     highscore = new Highscore();
                     sparatScore = true;
                 }
@@ -329,7 +328,6 @@ namespace SpaceShooterC2
             //Återgå till meny om man klickar esc
             if (keyboardState.IsKeyDown(Keys.Space))
             {
-                sparatScore = false;
                 return State.Menu;
             }
             return State.Highscore;
