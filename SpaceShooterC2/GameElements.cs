@@ -53,7 +53,7 @@ namespace SpaceShooterC2
 
 
         //Items
-        static List<PhysicalObject> items;
+        static List<Item> items;
 
         static bool sparatScore = false;
 
@@ -69,6 +69,7 @@ namespace SpaceShooterC2
             coins = new List<Coin>();
             hearts = new List<Heart>();
             rapidFires = new List<Rapidfire>();
+            items = new List<Item>();
         }
 
         public static void LoadContent(ContentManager content, GameWindow window)
@@ -268,38 +269,30 @@ namespace SpaceShooterC2
             //    player.harRapidfire = false;
 
 
-            foreach(PhysicalObject item in items.ToList())
+            foreach(Item item in items.ToList())
             {
-                if (item.IsAlive)
+
+                item.Update(gameTime);
+
+                if (item.CheckCollision(player))
                 {
-                    item.Update(gameTime);
-
-                    if (item.CheckCollision(player))
+                    if (item is Coin)
                     {
-                        if (item is Coin)
-                        {
-                            items.Remove(item);
-                            player.Points++;
-                        }
-
-                        if (item is Heart) 
-                        {
-                            if(liv < 3) liv++;
-
-                            items.Remove(item);
-                        }
-
-                        if(item is Rapidfire)
-                        {
-                            player.harRapidfire = true;
-                            item.IsAlive = false;
-                            rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
-                        }
+                        player.Points++;
                     }
+
+                    if (item is Heart)
+                    {
+                        if (liv < 3) liv++;
+                    }
+
+                    if (item is Rapidfire)
+                    {
+                        player.harRapidfire = true;
+                        rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+                    }
+                    item.IsAlive = false;
                 }
-
-                else { items.Remove(item); }
-
                 if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
                     player.harRapidfire = false;
 

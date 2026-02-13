@@ -20,14 +20,14 @@ namespace SpaceShooterC2
 
         public override void Update(GameWindow window, GameTime gameTime)
         {
-            if (player.PlayerPosX > vector.X)
+            if (player.X > vector.X)
                 vector.X ++;
-            else if (player.PlayerPosX < vector.X)
+            else if (player.X < vector.X)
                 vector.X --;
 
-            if (player.PlayerPosY > vector.Y)
+            if (player.Y > vector.Y)
                 vector.Y ++;
-            else if (player.PlayerPosY < vector.Y)
+            else if (player.Y < vector.Y)
                 vector.Y --;
 
 

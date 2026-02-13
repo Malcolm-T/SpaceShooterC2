@@ -19,15 +19,14 @@ namespace SpaceShooterC2
             this.bulletTexture = bulletTexture;
         }
 
+        //Egenskaper
         int points = 0;
         public int Points 
         { 
             get { return points; } 
             set { points = value; } 
         }
-
-
-        //Egenskaper    
+  
         public List<Bullet> Bullets { get { return bullets; } }
 
         bool isInvincible;
@@ -43,17 +42,12 @@ namespace SpaceShooterC2
             set { InvincibleUntil = value; }
         }
 
-        public double Time
-        {
-            get { return Time; }
-            set { Time = value; }
-        }
+        public double Time;
 
         float rotation = 0f;
 
 
         //Powerups
-        
         public bool harRapidfire
         {
             get { return harRapidfire; }
