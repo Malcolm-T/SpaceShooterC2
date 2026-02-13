@@ -12,26 +12,6 @@ namespace SpaceShooterC2
 {
     internal class Player : PhysicalObject
     {
-        public List<Bullet> Bullets { get { return bullets; } }
-
-        public bool IsInvincible { get; set; }
-        public double InvincibleUntil { get; set; }
-        public double Time { get; set; }
-
-        int points = 0;
-
-        float rotation = 0f;
-
-        public float PlayerPosX { get { return vector.X; } }
-        public float PlayerPosY { get { return vector.Y; } }
-
-        public float MousePosX { get { return Mouse.GetState().X; } }
-        public float MousePosY { get { return Mouse.GetState().Y; } }
-        
-        //Powerups
-        public bool harRapidfire { get; set; } = false;
-
-
         //Konstruktor
         public Player(Texture2D texture, float X, float Y, float speedX, float speedY, Texture2D bulletTexture) : base(texture, X, Y, speedX, speedY)
         {
@@ -39,7 +19,49 @@ namespace SpaceShooterC2
             this.bulletTexture = bulletTexture;
         }
 
-        public int Points { get { return points; } set { points = value; } }
+        int points = 0;
+        public int Points 
+        { 
+            get { return points; } 
+            set { points = value; } 
+        }
+
+
+        //Egenskaper    
+        public List<Bullet> Bullets { get { return bullets; } }
+
+        bool isInvincible;
+        public bool IsInvincible
+        {
+            get { return isInvincible; }
+            set { isInvincible = value; }
+        }
+
+        public double InvincibleUntil
+        {
+            get { return InvincibleUntil; }
+            set { InvincibleUntil = value; }
+        }
+
+        public double Time
+        {
+            get { return Time; }
+            set { Time = value; }
+        }
+
+        float rotation = 0f;
+
+
+        //Powerups
+        
+        public bool harRapidfire
+        {
+            get { return harRapidfire; }
+            set { harRapidfire = value; }
+        }
+
+
+
         List<Bullet> bullets; //Allla skott 
         Texture2D bulletTexture; //skottets bild
         double timeSinceLastBullet = 0; //millesekunder

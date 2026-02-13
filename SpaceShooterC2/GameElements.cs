@@ -306,9 +306,6 @@ namespace SpaceShooterC2
             }
 
 
-
-
-
             //Checkar om level upp
             if (enemies.Count == 0)
             {

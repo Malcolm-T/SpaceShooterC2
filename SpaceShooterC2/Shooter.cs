@@ -29,7 +29,7 @@ namespace SpaceShooterC2
         public override void Update(GameWindow window, GameTime gameTime)
         {
             Vector2 ShooterCenter = new Vector2(vector.X + texture.Width / 2, vector.Y + texture.Height / 2);
-            Vector2 PlayerCenter = new Vector2(player.PlayerPosX, player.PlayerPosY);
+            Vector2 PlayerCenter = new Vector2(player.X, player.Y);
             Vector2 direction = PlayerCenter - ShooterCenter;
 
             //Rotation
