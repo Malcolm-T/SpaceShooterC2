@@ -51,6 +51,10 @@ namespace SpaceShooterC2
         static double coolDown;
         static bool skadlig = true;
 
+
+        //Items
+        static List<PhysicalObject> items;
+
         static bool sparatScore = false;
 
 
@@ -173,32 +177,34 @@ namespace SpaceShooterC2
             }
 
 
-            //Coins
+
             Random random = new Random();
+
+            //Coins
             int newCoin = random.Next(1, 100);
             if (newCoin == 1)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - coinSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height - coinSprite.Height);
 
-                coins.Add(new Coin(coinSprite, rndX, rndY, gameTime));
+                items.Add(new Coin(coinSprite, rndX, rndY, gameTime));
             }
 
-            foreach (Coin c in coins.ToList())
-            {
-                if (c.IsAlive)
-                {
-                    c.Update(gameTime);
+            //foreach (Coin c in coins.ToList())
+            //{
+            //    if (c.IsAlive)
+            //    {
+            //        c.Update(gameTime);
 
-                    if (c.CheckCollision(player))
-                    {
-                        coins.Remove(c);
-                        player.Points++;
-                    }
-                }
-                else
-                    coins.Remove(c);
-            }
+            //        if (c.CheckCollision(player))
+            //        {
+            //            coins.Remove(c);
+            //            player.Points++;
+            //        }
+            //    }
+            //    else
+            //        coins.Remove(c);
+            //}
 
             //Hearts
             int newHeart = random.Next(1, 400);
@@ -207,29 +213,29 @@ namespace SpaceShooterC2
                 int rndX = random.Next(0, window.ClientBounds.Width - heartsprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height - heartsprite.Height);
 
-                hearts.Add(new Heart(heartsprite, rndX, rndY, gameTime));
+                items.Add(new Heart(heartsprite, rndX, rndY, gameTime));
             }
 
-            foreach (Heart h in hearts.ToList())
-            {
-                if (h.IsAlive)
-                {
-                    h.Update(gameTime);
+            //foreach (Heart h in hearts.ToList())
+            //{
+            //    if (h.IsAlive)
+            //    {
+            //        h.Update(gameTime);
                      
-                    if (h.CheckCollision(player))
-                    {
-                        if(liv < 3)
-                        {
-                            hearts.Remove(h); 
-                            liv++;
-                        }
-                        else
-                            hearts.Remove(h);
-                    }
-                }
-                else
-                    hearts.Remove(h);
-            }
+            //        if (h.CheckCollision(player))
+            //        {
+            //            if(liv < 3)
+            //            {
+            //                hearts.Remove(h); 
+            //                liv++;
+            //            }
+            //            else
+            //                hearts.Remove(h);
+            //        }
+            //    }
+            //    else
+            //        hearts.Remove(h);
+            //}
 
             //Rapidfire
             int newRapidFire = random.Next(1, 1000);
@@ -238,29 +244,69 @@ namespace SpaceShooterC2
                 int rndX = random.Next(0, window.ClientBounds.Width - rapidFireSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height - rapidFireSprite.Height);
 
-                rapidFires.Add(new Rapidfire(rapidFireSprite, rndX, rndY, gameTime));
+                items.Add(new Rapidfire(rapidFireSprite, rndX, rndY, gameTime));
             }
 
 
+            //foreach (Rapidfire r in rapidFires.ToList())
+            //{
+            //    if (r.IsAlive)
+            //    {
+            //        r.Update(gameTime);
 
-            foreach (Rapidfire r in rapidFires.ToList())
+            //        if (r.CheckCollision(player))
+            //        {
+            //            player.harRapidfire = true;
+            //            r.IsAlive = false;
+            //            rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+            //        }
+            //    }
+            //    else
+            //        rapidFires.Remove(r);
+            //}
+            //if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
+            //    player.harRapidfire = false;
+
+
+            foreach(PhysicalObject item in items.ToList())
             {
-                if (r.IsAlive)
+                if (item.IsAlive)
                 {
-                    r.Update(gameTime);
+                    item.Update(gameTime);
 
-                    if (r.CheckCollision(player))
+                    if (item.CheckCollision(player))
                     {
-                        player.harRapidfire = true;
-                        r.IsAlive = false;
-                        rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+                        if (item is Coin)
+                        {
+                            items.Remove(item);
+                            player.Points++;
+                        }
+
+                        if (item is Heart) 
+                        {
+                            if(liv < 3) liv++;
+
+                            items.Remove(item);
+                        }
+
+                        if(item is Rapidfire)
+                        {
+                            player.harRapidfire = true;
+                            item.IsAlive = false;
+                            rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+                        }
                     }
                 }
-                else
-                    rapidFires.Remove(r);
+
+                else { items.Remove(item); }
+
+                if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
+                    player.harRapidfire = false;
+
             }
-            if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
-                player.harRapidfire = false;
+
+
+
 
 
             //Checkar om level upp
