@@ -436,6 +436,7 @@ namespace SpaceShooterC2
         private static void Reset(GameWindow window, ContentManager content)
         {
             player.Reset(380, 400, 2.5f, 4.5f);
+            items.Clear();
 
             level = 1;
             SpawnEnemies(window, content);
