@@ -27,7 +27,9 @@ namespace SpaceShooterC2
 
         public float X { get { return vector.X; } }
         public float Y { get { return vector.Y; } }
-        public float Width { get { return texture.Width; } }
-        public float Height { get { return texture.Height; } }
+        public float Width { get { if (texture == null) return 0; return texture.Width; } }
+        public float Height { get { if (texture == null) return 0; return texture.Height; } }
     }
 }
+
+

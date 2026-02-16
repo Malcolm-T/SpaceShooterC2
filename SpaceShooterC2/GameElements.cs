@@ -28,15 +28,12 @@ namespace SpaceShooterC2
         static List<Enemy> enemies;
 
         //Coins
-        static List<Coin> coins; 
         static Texture2D coinSprite;
 
         //Hearts
-        static List<Heart> hearts;
         static Texture2D heartsprite;
 
         //Rapidfire
-        static List<Rapidfire> rapidFires;
         static Texture2D rapidFireSprite;
         static double rapidTimer;
 
@@ -66,10 +63,7 @@ namespace SpaceShooterC2
 
         public static void Initialize()
         {
-            coins = new List<Coin>();
-            hearts = new List<Heart>();
-            rapidFires = new List<Rapidfire>();
-            items = new List<Item>();
+            
         }
 
         public static void LoadContent(ContentManager content, GameWindow window)
@@ -97,6 +91,9 @@ namespace SpaceShooterC2
 
 
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
+
+            //Lista Items
+            items = new List<Item>();
         }
 
         public static State MenuUpdate(GameTime gameTime)
@@ -188,7 +185,7 @@ namespace SpaceShooterC2
                 int rndX = random.Next(0, window.ClientBounds.Width - coinSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height - coinSprite.Height);
 
-                items.Add(new Coin(coinSprite, rndX, rndY, gameTime));
+                items.Add(new Item(coinSprite, rndX, rndY, ItemType.Coin, gameTime));
             }
 
             //foreach (Coin c in coins.ToList())
@@ -214,7 +211,7 @@ namespace SpaceShooterC2
                 int rndX = random.Next(0, window.ClientBounds.Width - heartsprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height - heartsprite.Height);
 
-                items.Add(new Heart(heartsprite, rndX, rndY, gameTime));
+                items.Add(new Item(heartsprite, rndX, rndY, ItemType.Heart, gameTime));
             }
 
             //foreach (Heart h in hearts.ToList())
@@ -245,7 +242,7 @@ namespace SpaceShooterC2
                 int rndX = random.Next(0, window.ClientBounds.Width - rapidFireSprite.Width);
                 int rndY = random.Next(0, window.ClientBounds.Height - rapidFireSprite.Height);
 
-                items.Add(new Rapidfire(rapidFireSprite, rndX, rndY, gameTime));
+                items.Add(new Item(rapidFireSprite, rndX, rndY, ItemType.Rapidfire, gameTime));
             }
 
 
@@ -269,32 +266,57 @@ namespace SpaceShooterC2
             //    player.harRapidfire = false;
 
 
-            foreach(Item item in items.ToList())
+            //foreach(Item item in items.ToList())
+            //{
+
+            //    item.Update(gameTime);
+
+            //    if (item.CheckCollision(player))
+            //    {
+            //        if (item is Coin)
+            //        {
+            //            player.Points++;
+            //        }
+
+            //        if (item is Heart)
+            //        {
+            //            if (liv < 3) liv++;
+            //        }
+
+            //        if (item is Rapidfire)
+            //        {
+            //            player.harRapidfire = true;
+            //            rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+            //        }
+            //        item.IsAlive = false;
+            //    }
+            //    if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
+            //        player.harRapidfire = false;
+            //}
+
+
+            foreach (Item i in items.ToList())
             {
+                i.Update(gameTime);
 
-                item.Update(gameTime);
-
-                if (item.CheckCollision(player))
+                if (player.CheckCollision(i))
                 {
-                    if (item is Coin)
+                    switch (i.Type)
                     {
-                        player.Points++;
-                    }
+                        case ItemType.Rapidfire:
+                            player.HarRapidfire = true;
+                            rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+                            break;
 
-                    if (item is Heart)
-                    {
-                        if (liv < 3) liv++;
+                        case ItemType.Heart:
+                            if (liv < 3) liv++;
+                            break;
+                        case ItemType.Coin:
+                            player.Points++;
+                            break;
                     }
-
-                    if (item is Rapidfire)
-                    {
-                        player.harRapidfire = true;
-                        rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
-                    }
-                    item.IsAlive = false;
+                    i.IsAlive = false;
                 }
-                if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
-                    player.harRapidfire = false;
 
             }
 
@@ -346,12 +368,8 @@ namespace SpaceShooterC2
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);
-            foreach(Coin c in coins.ToList())
-                c.Draw(spriteBatch);
-            foreach (Heart h in hearts.ToList())
-                h.Draw(spriteBatch);
-            foreach (Rapidfire r in rapidFires.ToList())
-                r.Draw(spriteBatch);
+            foreach(Item i in items.ToList())
+                i.Draw(spriteBatch);
 
             printText.Print("Points " + player.Points, spriteBatch, 0, 0);
 

@@ -36,10 +36,11 @@ namespace SpaceShooterC2
             set { isInvincible = value; }
         }
 
+        private double invincibleUntil;
         public double InvincibleUntil
         {
-            get { return InvincibleUntil; }
-            set { InvincibleUntil = value; }
+            get { return invincibleUntil; }
+            set { invincibleUntil = value; }
         }
 
         public double Time;
@@ -48,7 +49,8 @@ namespace SpaceShooterC2
 
 
         //Powerups
-        public bool harRapidfire
+        private bool harRapidfire;
+        public bool HarRapidfire
         {
             get { return harRapidfire; }
             set { harRapidfire = value; }
