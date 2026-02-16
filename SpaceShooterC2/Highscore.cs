@@ -12,6 +12,7 @@ namespace SpaceShooterC2
     {
         public List<Spelare> Scores;
 
+
         public Highscore()
         {
             Scores = new List<Spelare>();
@@ -29,7 +30,19 @@ namespace SpaceShooterC2
             }
 
             Scores.Sort();
+
+            sr.Close();
         }
+
+
+        public void NyttScore (int poäng)
+        {
+            using (StreamWriter writer = new StreamWriter("highscore.txt", true))
+            {
+                writer.WriteLine(poäng + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
+            }
+        }
+
 
     }
 

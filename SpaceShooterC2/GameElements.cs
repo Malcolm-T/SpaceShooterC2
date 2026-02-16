@@ -342,13 +342,11 @@ namespace SpaceShooterC2
 
             if (liv <= 0)
             {
+                highscore = new Highscore();
+
                 if (!sparatScore)
                 {
-                    using (StreamWriter writer = new StreamWriter("highscore.txt", true))
-                    {
-                        writer.WriteLine(player.Points + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
-                    }
-                    highscore = new Highscore();
+                    highscore.NyttScore(player.Points);
                     sparatScore = true;
                 }
 
@@ -404,6 +402,9 @@ namespace SpaceShooterC2
 
         public static void HighscoreDraw(SpriteBatch spriteBatch)
         {
+            highscore = new Highscore();
+
+
             //Rita ut highscore-listan 
             printText.Print("HIGHSCORE", spriteBatch, 300, 70);
             printText.Print(Player.Points.ToString() + " points", spriteBatch, 300, 30);
