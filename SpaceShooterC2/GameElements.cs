@@ -175,9 +175,8 @@ namespace SpaceShooterC2
             }
 
 
-
             Random random = new Random();
-
+            
             //Coins
             int newCoin = random.Next(1, 100);
             if (newCoin == 1)
@@ -316,9 +315,13 @@ namespace SpaceShooterC2
                             break;
                     }
                     i.IsAlive = false;
+                    items.Remove(i);
                 }
 
             }
+
+            if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
+                player.HarRapidfire = false;
 
 
             //Checkar om level upp
@@ -368,7 +371,7 @@ namespace SpaceShooterC2
             player.Draw(spriteBatch);
             foreach (Enemy e in enemies)
                 e.Draw(spriteBatch);
-            foreach(Item i in items.ToList())
+            foreach(Item i in items)
                 i.Draw(spriteBatch);
 
             printText.Print("Points " + player.Points, spriteBatch, 0, 0);
