@@ -441,6 +441,7 @@ namespace SpaceShooterC2
         {
             player.Reset(380, 400, 2.5f, 4.5f);
             items.Clear();
+            sparatScore = false;
 
             level = 1;
             SpawnEnemies(window, content);

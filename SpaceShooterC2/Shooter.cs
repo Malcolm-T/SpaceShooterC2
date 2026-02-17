@@ -10,18 +10,20 @@ namespace SpaceShooterC2
 {
     internal class Shooter : Enemy
     {
-        //Egenskaper
         private Player player;
         Texture2D bulletTexture;
         List<EnemyBullet> bullets;
         double timeSinceLastBullet = 0;
         float rotation = 0f;
 
+        Random random = new Random();
+        int targetPos;
         public Shooter(Texture2D texture, float X, float Y, Player player, Texture2D bulletTexture) : base(texture, X, Y, 6f, 0.3f)
         {
             this.player = player;
             bullets = new List<EnemyBullet>();
             this.bulletTexture = bulletTexture;
+            targetPos = random.Next(70, 130);
         }
 
         public List<EnemyBullet> Bullets { get { return bullets; } }
@@ -36,7 +38,9 @@ namespace SpaceShooterC2
             rotation = (float)Math.Atan2(direction.Y, direction.X);
             rotation += MathHelper.PiOver2;
 
-            if (vector.Y < 100)
+           
+
+            if (vector.Y < targetPos)
             {
                 vector.Y++;
             }
