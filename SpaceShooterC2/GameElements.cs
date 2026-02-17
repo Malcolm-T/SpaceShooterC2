@@ -391,11 +391,13 @@ namespace SpaceShooterC2
             //Rapidfire timer
             if(player.HarRapidfire)
             {
+
                 double timeLeft = rapidTimer - gameTime.TotalGameTime.TotalMilliseconds;
                 double percentage = timeLeft / 5000.0;
                 //Rita ut timer
                 int timerWidth = (int)(rapidTimerSprite.Height * percentage);
                 spriteBatch.Draw(rapidTimerSprite, new Rectangle(window.ClientBounds.Width-200, 10, timerWidth, rapidTimerSprite.Height), Color.White);
+                spriteBatch.Draw(rapidFireSprite, new Vector2(window.ClientBounds.Width - 200, 10), Color.White);
             }
 
         }
@@ -419,7 +421,7 @@ namespace SpaceShooterC2
 
             //Rita ut highscore-listan 
             printText.Print("HIGHSCORE", spriteBatch, 300, 70);
-            printText.Print(Player.Points.ToString() + " points", spriteBatch, 300, 30);
+            printText.Print("Ditt score: " + Player.Points.ToString() + " points", spriteBatch, 300, 30);
 
             int y = 120;
             int plats = 1;
