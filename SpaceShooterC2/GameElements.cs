@@ -36,6 +36,7 @@ namespace SpaceShooterC2
         //Rapidfire
         static Texture2D rapidFireSprite;
         static double rapidTimer;
+        static Texture2D rapidTimerSprite;
 
         static PrintText printText;
 
@@ -88,6 +89,7 @@ namespace SpaceShooterC2
             coinSprite = content.Load<Texture2D>("images/powerups/coin"); //Coin sprite
             heartsprite = content.Load<Texture2D>("images/powerups/Hjärta1"); //Heart sprite
             rapidFireSprite = content.Load<Texture2D>("images/powerups/Rapidfire"); //Rapidfire sprite
+            rapidTimerSprite = content.Load<Texture2D>("images/powerups/RapidTimerTemp"); //Rapidfire timer sprite
 
 
             printText = new PrintText(content.Load<SpriteFont>("myFont"));
@@ -384,7 +386,17 @@ namespace SpaceShooterC2
             }
 
 
-            printText.Print("Level: " + level, spriteBatch, 0, 30); 
+            printText.Print("Level: " + level, spriteBatch, 0, 30);
+
+            //Rapidfire timer
+            if(player.HarRapidfire)
+            {
+                double timeLeft = rapidTimer - gameTime.TotalGameTime.TotalMilliseconds;
+                double percentage = timeLeft / 5000.0;
+                //Rita ut timer
+                int timerWidth = (int)(rapidTimerSprite.Height * percentage);
+                spriteBatch.Draw(rapidTimerSprite, new Rectangle(window.ClientBounds.Width-200, 10, timerWidth, rapidTimerSprite.Height), Color.White);
+            }
 
         }
 
