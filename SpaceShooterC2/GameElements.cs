@@ -352,8 +352,6 @@ namespace SpaceShooterC2
                     sparatScore = true;
                 }
 
-
-
                 player.IsAlive = false;
                 return State.Highscore;
             }
@@ -391,9 +389,9 @@ namespace SpaceShooterC2
             //Rapidfire timer
             if(player.HarRapidfire)
             {
-
                 double timeLeft = rapidTimer - gameTime.TotalGameTime.TotalMilliseconds;
                 double percentage = timeLeft / 5000.0;
+
                 //Rita ut timer
                 int timerWidth = (int)(rapidTimerSprite.Height * percentage);
                 spriteBatch.Draw(rapidTimerSprite, new Rectangle(window.ClientBounds.Width-200, 10, timerWidth, rapidTimerSprite.Height), Color.White);
@@ -483,8 +481,33 @@ namespace SpaceShooterC2
             //Skapa fiender
             for (int i = 0; i < mines; i++)
             {
-                int rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
-                int rndY = random.Next(- 50, 0);
+                int rndX;
+                int rndY;
+                int Sida = random.Next(0, 4); //0 = vänster, 1 = höger, 2 = upp, 3 = ner
+                if(Sida == 0)
+                {
+                    rndX = random.Next(0, window.ClientBounds.Width);
+                    rndY = rndY = random.Next(0, window.ClientBounds.Height);
+                }
+                else if(Sida == 1)
+                {
+                    rndX = random.Next(0, window.ClientBounds.Width);
+                    rndY = random.Next(-50, 0);
+                }
+                else if(Sida == 2)
+                {
+                    rndX = random.Next(-50, 0);
+                    rndY = random.Next(0, window.ClientBounds.Height);
+                }
+                else
+                {
+                    rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
+                    rndY = random.Next(window.ClientBounds.Height, window.ClientBounds.Height + 50);
+                }
+
+
+                rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
+                rndY = random.Next(- 50, 0);
                 Mine temp = new Mine(mineSprite, rndX, rndY, player);
                 enemies.Add(temp); //Lägg till i listan
             }
