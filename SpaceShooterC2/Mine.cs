@@ -13,9 +13,31 @@ namespace SpaceShooterC2
     {
         private Player player;
 
-        public Mine(Texture2D texture, float X, float Y, Player player) : base(texture, X, Y, 6f, 0.3f)
+        public Mine(Texture2D texture, float X, float Y, GameWindow window, Player player) : base(texture, 0, 0, 6f, 0.3f, window)
         {
             this.player = player;
+            Random r = new Random();
+            int sida = r.Next(0, 4);
+
+            switch (sida)
+            {
+                case 0:
+                    vector.X = r.Next(0, window.ClientBounds.Width - texture.Width);
+                    vector.Y = -texture.Height;
+                    break;
+                case 1:
+                    vector.X = window.ClientBounds.Width;
+                    vector.Y = r.Next(0, window.ClientBounds.Height - texture.Height);
+                    break;
+                case 2:
+                    vector.X = r.Next(0, window.ClientBounds.Width - texture.Width);
+                    vector.Y = window.ClientBounds.Height;
+                    break;
+                case 3:
+                    vector.X = -texture.Width;
+                    vector.Y = r.Next(0, window.ClientBounds.Height - texture.Height);
+                    break;
+            }
         }
 
         public override void Update(GameWindow window, GameTime gameTime)

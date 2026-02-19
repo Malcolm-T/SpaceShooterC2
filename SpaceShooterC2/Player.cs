@@ -225,6 +225,12 @@ namespace SpaceShooterC2
         }
 
 
+        public void ResetPosition(GameWindow window)
+        {
+            vector.X = window.ClientBounds.Width / 2 - texture.Width / 2;
+            vector.Y = window.ClientBounds.Height / 2 - texture.Height / 2;
+        }
+
         public void Reset(float X, float Y, float speedX, float speedY)
         {
             vector.X = X;

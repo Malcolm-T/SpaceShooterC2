@@ -12,7 +12,7 @@ namespace SpaceShooterC2
     abstract class Enemy : PhysicalObject
     {
 
-        public Enemy(Texture2D texture, float X, float Y, float speedX, float speedY) : base(texture, X, Y, speedX, speedY)
+        public Enemy(Texture2D texture, float X, float Y, float speedX, float speedY, GameWindow window) : base(texture, X, Y, speedX, speedY)
         {
            
         }

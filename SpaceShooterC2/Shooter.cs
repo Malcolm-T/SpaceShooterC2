@@ -16,14 +16,40 @@ namespace SpaceShooterC2
         double timeSinceLastBullet = 0;
         float rotation = 0f;
 
-        Random random = new Random();
+        int sida;
         int targetPos;
-        public Shooter(Texture2D texture, float X, float Y, Player player, Texture2D bulletTexture) : base(texture, X, Y, 6f, 0.3f)
+        public Shooter(Texture2D texture, float X, float Y, GameWindow window, Player player, Texture2D bulletTexture) : base(texture, X, Y, 6f, 0.3f, window)
         {
             this.player = player;
             bullets = new List<EnemyBullet>();
             this.bulletTexture = bulletTexture;
-            targetPos = random.Next(70, 130);
+
+
+            Random r = new Random();
+            targetPos = r.Next(50, 150);
+            sida = r.Next(0, 4);
+
+
+            switch (sida)
+            {
+                case 0: // Uppifrån
+                    vector = new Vector2(r.Next(0, window.ClientBounds.Width - texture.Width), -texture.Height);
+                    speed = new Vector2(0, 3f);
+                    break;
+                case 1: // Höger
+                    vector = new Vector2(window.ClientBounds.Width, r.Next(0, window.ClientBounds.Height - texture.Height));
+                    speed = new Vector2(3f, 0);
+                    break;
+                case 2: // Nedifrån
+                    vector = new Vector2(r.Next(0, window.ClientBounds.Width - texture.Width), window.ClientBounds.Height);
+                    speed = new Vector2(0, 3f);
+                    break;
+                case 3: // Vänster
+                    vector = new Vector2(-texture.Width, r.Next(0, window.ClientBounds.Height - texture.Height));
+                    speed = new Vector2(3f, 0);
+                    break;
+            }
+
         }
 
         public List<EnemyBullet> Bullets { get { return bullets; } }
@@ -38,12 +64,22 @@ namespace SpaceShooterC2
             rotation = (float)Math.Atan2(direction.Y, direction.X);
             rotation += MathHelper.PiOver2;
 
-           
-
-            if (vector.Y < targetPos)
+            switch (sida)
             {
-                vector.Y++;
+                case 0: // Uppifrån
+                    if (vector.Y < targetPos) vector.Y += speed.Y;
+                    break;
+                case 1: // Höger
+                    if (vector.X > window.ClientBounds.Width - texture.Width - targetPos) vector.X -= speed.X;
+                    break;
+                case 2: // Nedifrån
+                    if (vector.Y > window.ClientBounds.Height - texture.Height - targetPos) vector.Y -= speed.Y;
+                    break;
+                case 3: // Vänster
+                    if (vector.X < targetPos) vector.X += speed.X;
+                    break;
             }
+
 
             //Kontrollera när shooter ska skjuta
             if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 1000)

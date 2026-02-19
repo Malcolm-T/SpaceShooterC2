@@ -156,6 +156,11 @@ namespace SpaceShooterC2
                     enemies.Remove(enemy);
             }
 
+
+            spawnItems(window, gameTime);
+
+
+
             //Hit-reg. bullets på player
             foreach(Enemy enemy in enemies)
             {
@@ -175,125 +180,6 @@ namespace SpaceShooterC2
                     }
                 }
             }
-
-
-            Random random = new Random();
-            
-            //Coins
-            int newCoin = random.Next(1, 100);
-            if (newCoin == 1)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - coinSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height - coinSprite.Height);
-
-                items.Add(new Item(coinSprite, rndX, rndY, ItemType.Coin, gameTime));
-            }
-
-            //foreach (Coin c in coins.ToList())
-            //{
-            //    if (c.IsAlive)
-            //    {
-            //        c.Update(gameTime);
-
-            //        if (c.CheckCollision(player))
-            //        {
-            //            coins.Remove(c);
-            //            player.Points++;
-            //        }
-            //    }
-            //    else
-            //        coins.Remove(c);
-            //}
-
-            //Hearts
-            int newHeart = random.Next(1, 400);
-            if (newHeart == 1)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - heartsprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height - heartsprite.Height);
-
-                items.Add(new Item(heartsprite, rndX, rndY, ItemType.Heart, gameTime));
-            }
-
-            //foreach (Heart h in hearts.ToList())
-            //{
-            //    if (h.IsAlive)
-            //    {
-            //        h.Update(gameTime);
-                     
-            //        if (h.CheckCollision(player))
-            //        {
-            //            if(liv < 3)
-            //            {
-            //                hearts.Remove(h); 
-            //                liv++;
-            //            }
-            //            else
-            //                hearts.Remove(h);
-            //        }
-            //    }
-            //    else
-            //        hearts.Remove(h);
-            //}
-
-            //Rapidfire
-            int newRapidFire = random.Next(1, 1000);
-            if (newRapidFire == 1)
-            {
-                int rndX = random.Next(0, window.ClientBounds.Width - rapidFireSprite.Width);
-                int rndY = random.Next(0, window.ClientBounds.Height - rapidFireSprite.Height);
-
-                items.Add(new Item(rapidFireSprite, rndX, rndY, ItemType.Rapidfire, gameTime));
-            }
-
-
-            //foreach (Rapidfire r in rapidFires.ToList())
-            //{
-            //    if (r.IsAlive)
-            //    {
-            //        r.Update(gameTime);
-
-            //        if (r.CheckCollision(player))
-            //        {
-            //            player.harRapidfire = true;
-            //            r.IsAlive = false;
-            //            rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
-            //        }
-            //    }
-            //    else
-            //        rapidFires.Remove(r);
-            //}
-            //if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
-            //    player.harRapidfire = false;
-
-
-            //foreach(Item item in items.ToList())
-            //{
-
-            //    item.Update(gameTime);
-
-            //    if (item.CheckCollision(player))
-            //    {
-            //        if (item is Coin)
-            //        {
-            //            player.Points++;
-            //        }
-
-            //        if (item is Heart)
-            //        {
-            //            if (liv < 3) liv++;
-            //        }
-
-            //        if (item is Rapidfire)
-            //        {
-            //            player.harRapidfire = true;
-            //            rapidTimer = gameTime.TotalGameTime.TotalMilliseconds + 5000;
-            //        }
-            //        item.IsAlive = false;
-            //    }
-            //    if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
-            //        player.harRapidfire = false;
-            //}
 
 
             foreach (Item i in items.ToList())
@@ -330,6 +216,7 @@ namespace SpaceShooterC2
             if (enemies.Count == 0)
             {
                 level++;
+                player.ResetPosition(window); 
                 enemiesKilled = 0;
                 SpawnEnemies(window, content);
             }
@@ -474,62 +361,65 @@ namespace SpaceShooterC2
 
             //Sprites
             Texture2D mineSprite = content.Load<Texture2D>("Kroppen/Virus1");
-            Texture2D tripodSprite = content.Load<Texture2D>("Kroppen/Virus2");
+            Texture2D tripodSprite = content.Load<Texture2D>("Kroppen/Virus2"); 
             Texture2D shooterSprite = content.Load<Texture2D>("Kroppen/Shooter2");
 
 
             //Skapa fiender
             for (int i = 0; i < mines; i++)
             {
-                int rndX;
-                int rndY;
-                int Sida = random.Next(0, 4); //0 = vänster, 1 = höger, 2 = upp, 3 = ner
-                if(Sida == 0)
-                {
-                    rndX = random.Next(0, window.ClientBounds.Width);
-                    rndY = rndY = random.Next(0, window.ClientBounds.Height);
-                }
-                else if(Sida == 1)
-                {
-                    rndX = random.Next(0, window.ClientBounds.Width);
-                    rndY = random.Next(-50, 0);
-                }
-                else if(Sida == 2)
-                {
-                    rndX = random.Next(-50, 0);
-                    rndY = random.Next(0, window.ClientBounds.Height);
-                }
-                else
-                {
-                    rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
-                    rndY = random.Next(window.ClientBounds.Height, window.ClientBounds.Height + 50);
-                }
-
-
-                rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
-                rndY = random.Next(- 50, 0);
-                Mine temp = new Mine(mineSprite, rndX, rndY, player);
+                Mine temp = new Mine(mineSprite, 0, 0, window, player);
                 enemies.Add(temp); //Lägg till i listan
             }
 
             for (int i = 0; i < tripods; i++)
             {
-                int rndX = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
-                int rndY = random.Next(- 50, 0);
-                Tripod temp = new Tripod(tripodSprite, rndX, rndY);
+                Tripod temp = new Tripod(tripodSprite, 0, 0, window);
                 enemies.Add(temp);
             }
 
             for(int i = 0; i < shooters; i++)
             {
-                int rndX = random.Next(0, window.ClientBounds.Width - shooterSprite.Width);
-                int rndY = random.Next(-50,0);
-                Shooter temp = new Shooter(shooterSprite, rndX, rndY, player, content.Load<Texture2D>("images/player/Enemies/evilBullet"));
+                Shooter temp = new Shooter(shooterSprite, 0, 0, window, player, content.Load<Texture2D>("images/player/Enemies/evilBullet"));
                 enemies.Add(temp);
             }
 
         }
 
 
+        static void spawnItems(GameWindow window, GameTime gameTime)
+        {
+            Random random = new Random();
+            //Coins
+            int newCoin = random.Next(1, 100);
+            if (newCoin == 1)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - coinSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height - coinSprite.Height);
+
+                items.Add(new Item(coinSprite, rndX, rndY, ItemType.Coin, gameTime));
+            }
+
+            //Hearts
+            int newHeart = random.Next(1, 400);
+            if (newHeart == 1)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - heartsprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height - heartsprite.Height);
+
+                items.Add(new Item(heartsprite, rndX, rndY, ItemType.Heart, gameTime));
+            }
+
+            //Rapidfire
+            int newRapidFire = random.Next(1, 1000);
+            if (newRapidFire == 1)
+            {
+                int rndX = random.Next(0, window.ClientBounds.Width - rapidFireSprite.Width);
+                int rndY = random.Next(0, window.ClientBounds.Height - rapidFireSprite.Height);
+
+                items.Add(new Item(rapidFireSprite, rndX, rndY, ItemType.Rapidfire, gameTime));
+            }
+
+        }
     }
 }
