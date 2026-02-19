@@ -116,6 +116,7 @@ namespace SpaceShooterC2
             //Uppdatera spelarens position
             player.Update(window, gameTime);
 
+
             //Gå igenom alla fiender
             foreach (Enemy enemy in enemies.ToList())
             {
@@ -131,19 +132,18 @@ namespace SpaceShooterC2
                 }
                 if (enemy.IsAlive)
                 {
-                    if (gameTime.TotalGameTime.TotalMilliseconds < coolDown)
+                    if (gameTime.TotalGameTime.TotalMilliseconds < coolDown) //Kollar om spelaren är sårbar
                     {
                         skadlig = false;
                         player.IsInvincible = true;
                         player.InvincibleUntil = gameTime.TotalGameTime.TotalMilliseconds + 1000;
 
                     }
-
                     else skadlig = true;
 
                     if (skadlig)
                     {
-                        if (enemy.CheckCollision(player))
+                        if (enemy.CheckCollision(player)) //Om spelare blir träffad när sårbar
                         {
                             liv--;
                             coolDown = gameTime.TotalGameTime.TotalMilliseconds + 3000;
@@ -157,6 +157,7 @@ namespace SpaceShooterC2
             }
 
 
+            //Spawn av items
             spawnItems(window, gameTime);
 
 
@@ -182,13 +183,14 @@ namespace SpaceShooterC2
             }
 
 
+            //Items logik
             foreach (Item i in items.ToList())
             {
                 i.Update(gameTime);
 
-                if (player.CheckCollision(i))
+                if (player.CheckCollision(i)) 
                 {
-                    switch (i.Type)
+                    switch (i.Type) //Kollar vilket slags item
                     {
                         case ItemType.Rapidfire:
                             player.HarRapidfire = true;
@@ -207,7 +209,7 @@ namespace SpaceShooterC2
                 }
 
             }
-
+            //När rapidtimer är över 
             if (rapidTimer < gameTime.TotalGameTime.TotalMilliseconds)
                 player.HarRapidfire = false;
 
