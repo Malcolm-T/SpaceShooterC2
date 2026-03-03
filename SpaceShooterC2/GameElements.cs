@@ -77,7 +77,7 @@ namespace SpaceShooterC2
 
             background = content.Load<Texture2D>("Kroppen/Bakgrund");
 
-            player = new Player(content.Load<Texture2D>("images/player/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("images/player/bullet"));
+            player = new Player(content.Load<Texture2D>("images/player/ship"), window.ClientBounds.Width / 2, window.ClientBounds.Height / 2, 2.5f, 4.5f, content.Load<Texture2D>("images/player/bullet"));
 
             //Title
             Title = content.Load<Texture2D>("Kroppen/CellWars");
