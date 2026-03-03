@@ -16,37 +16,50 @@ namespace SpaceShooterC2
         public Highscore()
         {
             Scores = new List<Spelare>();
-
-            StreamReader sr = new StreamReader("highscore.txt");
-            string row;
-            while ((row = sr.ReadLine()) != null)
+            string path = "highscore.txt";
+            if (!File.Exists(path))
             {
-                string[] uppgifter = row.Split("\t");
-
-                int score = int.Parse(uppgifter[0]);
-                string datum = uppgifter[1];
-                Spelare temp = new Spelare(score, datum);
-                Scores.Add(temp);
+                return;
             }
+            try
+            {
+                using(StreamReader sr = new StreamReader(path))
+                {
+                    string row;
+                    while ((row = sr.ReadLine()) != null)
+                    {
+                        string[] uppgifter = row.Split("\t");
 
-            Scores.Sort();
+                        if(uppgifter.Length >= 2)
+                        {
+                            if (int.TryParse(uppgifter[0], out int score))
+                            {
+                                string datum = uppgifter[1];
+                                Spelare temp = new Spelare(score, datum);
+                                Scores.Add(temp);
 
-            sr.Close();
+                            }
+                        }
+                    }
+                }
+                Scores.Sort();
+            }
+            catch(Exception e) {Console.WriteLine("Fel uppstod vid inläsning av highscore" + e.ToString());}
         }
 
 
         public void NyttScore (int poäng)
         {
-            using (StreamWriter writer = new StreamWriter("highscore.txt", true))
+            try
             {
-                writer.WriteLine(poäng + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
+                using (StreamWriter writer = new StreamWriter("highscore.txt", true))
+                {
+                    writer.WriteLine(poäng + "\t" + DateTime.Now.ToString("yyyy-MM-dd"));
+                }
             }
+            catch (Exception e) {Console.WriteLine("Fel uppstod vid uppladdning av highscore" + e.ToString());}
         }
-
-
     }
-
-
 
 
     class Spelare : IComparable<Spelare>
