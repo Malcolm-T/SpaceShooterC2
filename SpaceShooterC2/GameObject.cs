@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SpaceShooterC2
 {
-    internal class GameObject
+    internal abstract class GameObject
     {
         protected Texture2D texture;
         protected Vector2 vector;

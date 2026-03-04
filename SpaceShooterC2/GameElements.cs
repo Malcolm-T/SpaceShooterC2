@@ -42,7 +42,6 @@ namespace SpaceShooterC2
 
         //Level
         static int level = 1;
-        static int enemiesKilled = 0;
 
         //Liv
         static int liv = 3;
@@ -127,7 +126,6 @@ namespace SpaceShooterC2
                         enemy.IsAlive = false;
                         b.IsAlive = false;
                         player.Points++;
-                        enemiesKilled++;
                     }
                 }
                 if (enemy.IsAlive)
@@ -201,7 +199,7 @@ namespace SpaceShooterC2
                             if (liv < 3) liv++;
                             break;
                         case ItemType.Coin:
-                            player.Points++;
+                            player.Points+=20;
                             break;
                     }
                     i.IsAlive = false;
@@ -219,7 +217,6 @@ namespace SpaceShooterC2
             {
                 level++;
                 player.ResetPosition(window); 
-                enemiesKilled = 0;
                 SpawnEnemies(window, content);
             }
 
@@ -393,7 +390,7 @@ namespace SpaceShooterC2
         {
             Random random = new Random();
             //Coins
-            int newCoin = random.Next(1, 100);
+            int newCoin = random.Next(1, 1000);
             if (newCoin == 1)
             {
                 int rndX = random.Next(0, window.ClientBounds.Width - coinSprite.Width);
